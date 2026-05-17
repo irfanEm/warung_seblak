@@ -1,62 +1,75 @@
 <?php
-
+// database/seeders/MenuSeeder.php
 namespace Database\Seeders;
 
 use App\Domain\Menu\Models\Category;
 use App\Domain\Menu\Models\Menu;
 use App\Domain\Menu\Models\SpicinessLevel;
 use App\Domain\Menu\Models\Topping;
+use App\Domain\Outlet\Models\Outlet;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class MenuSeeder extends Seeder
 {
     public function run(): void
     {
-        $seblakCat = Category::where('slug', 'seblak')->first()->id;
-        $minumanCat = Category::where('slug', 'minuman')->first()->id;
-        $cemilanCat = Category::where('slug', 'cemilan')->first()->id;
+        $outlet = Outlet::first();
+
+        $categories = Category::where('outlet_id', $outlet->id)->pluck('id', 'slug');
+        $toppings = Topping::where('outlet_id', $outlet->id)->pluck('id', 'name');
+        $spiciness = SpicinessLevel::where('outlet_id', $outlet->id)->pluck('id', 'name');
 
         $menus = [
             [
-                'outlet_id' => 1, 'category_id' => $seblakCat, 'name' => 'Seblak Original', 
-                'slug' => 'seblak-original', 'price' => 12000, 'is_available' => true
+                'name' => 'Seblak Original', 'price' => 12000, 'category_slug' => 'makanan',
+                'toppings' => ['Telur', 'Kerupuk'], 'spiciness' => ['Level 1', 'Level 2']
             ],
             [
-                'outlet_id' => 1, 'category_id' => $seblakCat, 'name' => 'Seblak Komplit', 
-                'slug' => 'seblak-komplit', 'price' => 18000, 'is_available' => true
+                'name' => 'Seblak Komplit', 'price' => 20000, 'category_slug' => 'makanan',
+                'toppings' => ['Telur', 'Ceker', 'Mie', 'Keju'], 'spiciness' => ['Level 1', 'Level 2', 'Level 3']
             ],
             [
-                'outlet_id' => 1, 'category_id' => $seblakCat, 'name' => 'Seblak Ceker', 
-                'slug' => 'seblak-ceker', 'price' => 15000, 'is_available' => true
+                'name' => 'Seblak Ceker', 'price' => 15000, 'category_slug' => 'makanan',
+                'toppings' => ['Ceker'], 'spiciness' => ['Level 2', 'Level 3']
             ],
             [
-                'outlet_id' => 1, 'category_id' => $minumanCat, 'name' => 'Teh Manis', 
-                'slug' => 'teh-manis', 'price' => 5000, 'is_available' => true
+                'name' => 'Baso Aci Kuah', 'price' => 10000, 'category_slug' => 'makanan',
+                'toppings' => ['Telur'], 'spiciness' => ['Tidak Pedas', 'Level 1']
             ],
             [
-                'outlet_id' => 1, 'category_id' => $minumanCat, 'name' => 'Es Jeruk', 
-                'slug' => 'es-jeruk', 'price' => 7000, 'is_available' => true
+                'name' => 'Es Teh Manis', 'price' => 5000, 'category_slug' => 'minuman',
+                'toppings' => [], 'spiciness' => []
             ],
             [
-                'outlet_id' => 1, 'category_id' => $cemilanCat, 'name' => 'Tahu Crispy', 
-                'slug' => 'tahu-crispy', 'price' => 8000, 'is_available' => true
+                'name' => 'Es Jeruk', 'price' => 7000, 'category_slug' => 'minuman',
+                'toppings' => [], 'spiciness' => []
             ],
+            [
+                'name' => 'Tahu Crispy', 'price' => 8000, 'category_slug' => 'snack',
+                'toppings' => ['Sosis'], 'spiciness' => ['Level 1']
+            ]
         ];
 
-        $allToppings = Topping::pluck('id')->toArray();
-        $allSpiciness = SpicinessLevel::pluck('id')->toArray();
-
-        foreach ($menus as $menuData) {
-            $menu = Menu::updateOrCreate(
-                ['outlet_id' => $menuData['outlet_id'], 'slug' => $menuData['slug']],
-                $menuData
+        foreach ($menus as $m) {
+            $menu = Menu::firstOrCreate(
+                ['outlet_id' => $outlet->id, 'slug' => Str::slug($m['name'])],
+                [
+                    'category_id' => $categories[$m['category_slug']],
+                    'name' => $m['name'],
+                    'price' => $m['price'],
+                    'is_available' => true,
+                    'stock_quantity' => null
+                ]
             );
 
-            // Jika kategori seblak, pasang topping & spiciness
-            if ($menuData['category_id'] === $seblakCat) {
-                $menu->toppings()->sync($allToppings);
-                $menu->spicinessLevels()->sync($allSpiciness);
-            }
+            // Sync Toppings
+            $toppingIds = collect($m['toppings'])->map(fn($t) => $toppings[$t] ?? null)->filter()->toArray();
+            $menu->toppings()->sync($toppingIds);
+
+            // Sync Spiciness Levels
+            $spicinessIds = collect($m['spiciness'])->map(fn($s) => $spiciness[$s] ?? null)->filter()->toArray();
+            $menu->spicinessLevels()->sync($spicinessIds);
         }
     }
 }

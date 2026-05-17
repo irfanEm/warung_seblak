@@ -1,5 +1,5 @@
 <?php
-
+// database/seeders/DatabaseSeeder.php
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -11,8 +11,9 @@ class DatabaseSeeder extends Seeder
     {
         DB::transaction(function () {
             $this->call([
-                UserSeeder::class,
+                RoleAndPermissionSeeder::class,
                 OutletSeeder::class,
+                UserSeeder::class,
                 CategorySeeder::class,
                 ToppingSeeder::class,
                 SpicinessLevelSeeder::class,

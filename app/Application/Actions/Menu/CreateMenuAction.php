@@ -1,30 +1,35 @@
 <?php
-
 namespace App\Application\Actions\Menu;
 
-use App\Application\DTOs\MenuData;
 use App\Domain\Menu\Models\Menu;
-use App\Domain\Menu\Repositories\MenuRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CreateMenuAction
 {
-    public function __construct(private readonly MenuRepositoryInterface $menuRepo) {}
-
-    public function execute(MenuData $data): Menu
+    public function execute(array $data, $imageFile, array $toppingIds = [], array $spicinessIds = []): Menu
     {
-        $slug = Str::slug($data->name);
-        
-        // Aturan Bisnis: Pastikan slug unik
-        $originalSlug = $slug;
-        $counter = 1;
-        while (!$this->menuRepo->isSlugUnique($slug)) {
-            $slug = $originalSlug . '-' . $counter;
-            $counter++;
-        }
+        return DB::transaction(function () use ($data, $imageFile, $toppingIds, $spicinessIds) {
+            $data['slug'] = Str::slug($data['name']) . '-' . time();
+            
+            if ($imageFile) {
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($imageFile);
+                $image->resize(800, 600); // Resize untuk optimasi
+                
+                $filename = 'menus/' . $data['slug'] . '.jpg';
+                Storage::disk('public')->put($filename, (string) $image->toJpeg());
+                $data['image'] = $filename;
+            }
 
-        $payload = array_merge($data->toArray(), ['slug' => $slug]);
+            $menu = Menu::create($data);
+            $menu->toppings()->sync($toppingIds);
+            $menu->spicinessLevels()->sync($spicinessIds);
 
-        return $this->menuRepo->store($payload);
+            return $menu;
+        });
     }
 }

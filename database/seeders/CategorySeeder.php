@@ -1,22 +1,28 @@
 <?php
-
+// database/seeders/CategorySeeder.php
 namespace Database\Seeders;
 
 use App\Domain\Menu\Models\Category;
+use App\Domain\Outlet\Models\Outlet;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
     public function run(): void
     {
+        $outlet = Outlet::first();
+
         $categories = [
-            ['outlet_id' => 1, 'name' => 'Seblak', 'slug' => 'seblak', 'sort' => 1],
-            ['outlet_id' => 1, 'name' => 'Minuman', 'slug' => 'minuman', 'sort' => 2],
-            ['outlet_id' => 1, 'name' => 'Cemilan', 'slug' => 'cemilan', 'sort' => 3],
+            ['name' => 'Makanan', 'slug' => 'makanan', 'sort' => 1],
+            ['name' => 'Minuman', 'slug' => 'minuman', 'sort' => 2],
+            ['name' => 'Snack', 'slug' => 'snack', 'sort' => 3],
         ];
 
         foreach ($categories as $cat) {
-            Category::updateOrCreate(['outlet_id' => $cat['outlet_id'], 'slug' => $cat['slug']], $cat);
+            Category::firstOrCreate(
+                ['outlet_id' => $outlet->id, 'slug' => $cat['slug']],
+                ['name' => $cat['name'], 'sort' => $cat['sort']]
+            );
         }
     }
 }
