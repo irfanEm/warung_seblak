@@ -20,14 +20,17 @@ class UpdateMenuAction
                     Storage::disk('public')->delete($menu->image);
                 }
 
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($imageFile);
-                $image->resize(800, 600);
-                
-                // Gunakan slug baru jika nama berubah, atau slug lama
                 $slug = Str::slug($data['name']) . '-' . time();
                 $filename = 'menus/' . $slug . '.jpg';
-                Storage::disk('public')->put($filename, (string) $image->toJpeg());
+                
+                $img = \Intervention\Image\ImageManagerStatic::make($imageFile->getRealPath());
+                $img->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                
+                Storage::disk('public')->put($filename, (string) $img->encode('jpg', 80));
+                
                 $data['image'] = $filename;
                 $data['slug'] = $slug;
             } else {

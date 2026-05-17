@@ -16,12 +16,20 @@ class CreateMenuAction
             $data['slug'] = Str::slug($data['name']) . '-' . time();
             
             if ($imageFile) {
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($imageFile);
-                $image->resize(800, 600); // Resize untuk optimasi
-                
                 $filename = 'menus/' . $data['slug'] . '.jpg';
-                Storage::disk('public')->put($filename, (string) $image->toJpeg());
+                
+                // Proses gambar menggunakan v2 API
+                $img = \Intervention\Image\ImageManagerStatic::make($imageFile->getRealPath());
+                
+                // Resize maksimal lebar 800px, aspect ratio dijaga, jangan upscale jika gambar aslinya kecil
+                $img->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                
+                // Encode ke JPG dan simpan ke Storage Public
+                Storage::disk('public')->put($filename, (string) $img->encode('jpg', 80));
+                
                 $data['image'] = $filename;
             }
 

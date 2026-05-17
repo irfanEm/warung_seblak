@@ -6,6 +6,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Autentikasi
+Route::middleware('guest')->group(function () {
+    Route::get('/login', \App\Presentation\Livewire\Auth\Login::class)->name('login');
+});
+
+Route::post('/logout', function () {
+    Illuminate\Support\Facades\Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
+
 // Admin Group
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', \App\Presentation\Livewire\Admin\AdminDashboard::class)->name('dashboard');

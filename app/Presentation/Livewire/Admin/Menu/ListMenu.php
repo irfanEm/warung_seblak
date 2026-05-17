@@ -35,6 +35,9 @@ class ListMenu extends Component
         
         // Memaksa Livewire untuk merender ulang halaman
         $this->resetPage();
+        
+        // Memicu event untuk menutup modal di Alpine
+        $this->dispatch('menu-deleted');
     }
 
     public function render(ListMenusAction $action)
