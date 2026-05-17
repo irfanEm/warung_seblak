@@ -47,6 +47,7 @@
         <nav class="mt-5 px-4 space-y-2">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white' : 'text-gray-400' }}">Dashboard</a>
             <a href="{{ route('admin.menu.index') }}" class="flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.menu.*') ? 'bg-gray-800 text-white' : 'text-gray-400' }}">Menu</a>
+            <a href="{{ route('admin.table.index') }}" class="flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.table.*') ? 'bg-gray-800 text-white' : 'text-gray-400' }}">Meja & QR Code</a>
         </nav>
     </aside>
 
