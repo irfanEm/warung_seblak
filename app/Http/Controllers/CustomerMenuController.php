@@ -12,14 +12,14 @@ class CustomerMenuController extends Controller
         // Cari meja berdasarkan token
         $table = Table::where('token', $token)->first();
 
-        if (!$table || !$table->is_active) {
-            abort(404, 'Kode meja tidak valid atau meja sedang tidak aktif.');
+        if (!$table) {
+            abort(404, 'Kode meja tidak valid.');
         }
 
         // Simpan referensi meja di session pelanggan
         session(['table_id' => $table->id]);
 
-        // Tampilkan halaman placeholder
-        return view('customer.placeholder', compact('table'));
+        // Redirect ke menu customer
+        return redirect()->route('customer.menu');
     }
 }

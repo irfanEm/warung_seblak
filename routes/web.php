@@ -18,8 +18,13 @@ Route::post('/logout', function () {
     return redirect('/login');
 })->name('logout');
 
-// Rute Publik (Customer Scan)
-Route::get('/menu/{token}', [\App\Http\Controllers\CustomerMenuController::class, 'scan'])->name('customer.menu');
+// Rute Publik (Customer Scan & Pemesanan)
+Route::get('/menu', \App\Presentation\Livewire\Customer\CustomerMenu::class)->name('customer.menu');
+Route::get('/menu/{token}', [\App\Http\Controllers\CustomerMenuController::class, 'scan'])
+    ->where('token', '[A-Za-z0-9]+')
+    ->name('customer.scan');
+Route::get('/cart', \App\Presentation\Livewire\Customer\Cart::class)->name('customer.cart');
+Route::get('/checkout', \App\Presentation\Livewire\Customer\Checkout::class)->name('customer.checkout');
 
 // Admin Group
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {

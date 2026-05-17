@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Presentation\Livewire\Customer;
+
+use App\Application\Actions\Menu\ListMenusAction;
+use App\Domain\Menu\Models\Category;
+use App\Domain\Menu\Models\Menu;
+use App\Domain\Menu\Models\SpicinessLevel;
+use App\Domain\Menu\Models\Topping;
+use Livewire\Component;
+
+class CustomerMenu extends Component
+{
+    public ?int $selectedCategory = null;
+    public array $cart = [];
+    public bool $showModal = false;
+    
+    // Modal State
+    public ?Menu $selectedMenu = null;
+    public array $selectedToppings = [];
+    public ?int $selectedSpiciness = null;
+    public int $quantity = 1;
+
+    public function mount()
+    {
+        $this->cart = session('cart', []);
+    }
+
+    public function filterByCategory(?int $categoryId)
+    {
+        $this->selectedCategory = $categoryId;
+    }
+
+    public function openAddModal($menuId)
+    {
+        $this->selectedMenu = Menu::with(['toppings', 'spicinessLevels'])->find($menuId);
+        $this->selectedToppings = [];
+        $this->selectedSpiciness = null;
+        $this->quantity = 1;
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
+
+    public function addToCart()
+    {
+        if (!$this->selectedMenu) return;
+
+        // Hitung Subtotal (Harga Menu + Harga Topping)
+        $subtotal = $this->selectedMenu->price;
+        $toppings = Topping::whereIn('id', $this->selectedToppings)->get();
+        
+        foreach ($toppings as $topping) {
+            $subtotal += $topping->price;
+        }
+
+        $spiciness = null;
+        if ($this->selectedSpiciness) {
+            $spicinessModel = SpicinessLevel::find($this->selectedSpiciness);
+            if ($spicinessModel) {
+                $spiciness = [
+                    'id' => $spicinessModel->id,
+                    'name' => $spicinessModel->name
+                ];
+            }
+        }
+
+        $item = [
+            'menu_id' => $this->selectedMenu->id,
+            'name' => $this->selectedMenu->name,
+            'price' => $this->selectedMenu->price,
+            'quantity' => $this->quantity,
+            'toppings' => $toppings->map(fn($t) => ['id' => $t->id, 'name' => $t->name, 'price' => $t->price])->toArray(),
+            'spiciness_level' => $spiciness,
+            'subtotal' => $subtotal * $this->quantity,
+        ];
+
+        // Tambahkan ke Cart
+        $this->cart[uniqid()] = $item;
+        
+        // Simpan ke Session
+        session(['cart' => $this->cart]);
+        
+        // Update state & UI
+        $this->dispatch('cartUpdated');
+        $this->closeModal();
+    }
+
+    public function render(ListMenusAction $listMenus)
+    {
+        $categories = Category::all();
+        $menus = $listMenus->execute('', $this->selectedCategory);
+
+        return view('livewire.customer.customer-menu', compact('categories', 'menus'))
+            ->layout('layouts.customer');
+    }
+}
