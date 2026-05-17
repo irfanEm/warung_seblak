@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \App\Domain\Menu\Repositories\MenuRepositoryInterface::class, 
+            \App\Infrastructure\Persistence\Eloquent\MenuRepository::class
+        );
     }
 
     /**
