@@ -54,10 +54,13 @@ Route::middleware(['auth', 'role:Admin|Kasir'])->prefix('pos')->name('pos.')->gr
 });
 
 // Kitchen / Dapur Group
-Route::middleware(['auth', 'role:Admin|Dapur'])->prefix('kitchen')->name('kitchen.')->group(function () {
-    Route::get('/board', function () {
-        return "Kitchen Dashboard";
-    })->name('board');
+Route::middleware(['auth', 'role:Admin|Dapur'])->group(function () {
+    Route::get('/kitchen', \App\Presentation\Livewire\Kitchen\KitchenDisplay::class)->name('kitchen.index');
+    
+    // Redirect old dashboard to the new KDS screen
+    Route::get('/kitchen/board', function () {
+        return redirect()->route('kitchen.index');
+    })->name('kitchen.board');
 });
 
 // Driver Group

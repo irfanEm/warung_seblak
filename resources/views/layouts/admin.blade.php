@@ -37,6 +37,12 @@
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Dashboard</a>
                 <a href="{{ route('admin.menu.index') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.menu.*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Menu</a>
                 <a href="{{ route('admin.table.index') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.table.*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Meja & QR Code</a>
+                
+                @role('Admin|Dapur')
+                <a href="{{ route('kitchen.index') }}" target="_blank" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('kitchen.index') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">
+                    <span class="mr-2">🔥</span> Dapur (KDS)
+                </a>
+                @endrole
             </nav>
         </aside>
 
