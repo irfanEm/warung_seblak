@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Infrastructure\Payment;
+
+use App\Domain\Order\Models\Order;
+class MidtransGateway
+{
+    /**
+     * Set the Midtrans configuration.
+     */
+    private static function configure()
+    {
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$clientKey = config('midtrans.client_key');
+        \Midtrans\Config::$isProduction = config('midtrans.is_production');
+        \Midtrans\Config::$isSanitized = config('midtrans.sanitized');
+        \Midtrans\Config::$is3ds = config('midtrans.3ds');
+    }
+
+    /**
+     * Create a new transaction in Midtrans and get the Snap Token.
+     */
+    public static function createTransaction(Order $order, array $itemDetails): string
+    {
+        self::configure();
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $order->order_number,
+                'gross_amount' => (int) $order->total,
+            ],
+            'customer_details' => [
+                'first_name' => $order->customer_name ?? 'Pelanggan',
+                'phone' => $order->customer_phone ?? '',
+            ],
+            'item_details' => $itemDetails,
+            'callbacks' => [
+                'finish' => route('customer.checkout.finish', ['order_id' => $order->order_number]),
+                'unfinish' => route('customer.checkout.unfinish', ['order_id' => $order->order_number]),
+                'error' => route('customer.checkout.error', ['order_id' => $order->order_number]),
+            ],
+        ];
+
+        return \Midtrans\Snap::getSnapToken($params);
+    }
+}
