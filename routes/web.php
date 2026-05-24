@@ -48,9 +48,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
 // POS / Kasir Group
 Route::middleware(['auth', 'role:Admin|Kasir'])->prefix('pos')->name('pos.')->group(function () {
-    Route::get('/orders', function () {
-        return "POS Dashboard";
-    })->name('orders');
+    Route::get('/', \App\Presentation\Livewire\Pos\PosScreen::class)->name('index');
+    Route::get('/history', \App\Presentation\Livewire\Pos\PosHistory::class)->name('history');
 });
 
 // Kitchen / Dapur Group

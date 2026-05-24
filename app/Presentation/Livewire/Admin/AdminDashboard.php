@@ -4,7 +4,9 @@ namespace App\Presentation\Livewire\Admin;
 
 use App\Traits\HasRoleAuthorization;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.admin')]
 class AdminDashboard extends Component
 {
     use HasRoleAuthorization;

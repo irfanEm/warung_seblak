@@ -14,9 +14,10 @@ class PlaceOrderAction
         ?int $tableId = null,
         ?string $customerName = null,
         ?string $customerPhone = null,
-        ?string $notes = null
+        ?string $notes = null,
+        string $status = 'pending'
     ): Order {
-        return DB::transaction(function () use ($cart, $tableId, $customerName, $customerPhone, $notes) {
+        return DB::transaction(function () use ($cart, $tableId, $customerName, $customerPhone, $notes, $status) {
             
             // 1. Dapatkan outlet_id
             $outletId = null;
@@ -51,7 +52,7 @@ class PlaceOrderAction
                 'delivery_fee' => $deliveryFee,
                 'discount' => $discount,
                 'total' => $total,
-                'status' => 'pending',
+                'status' => $status,
                 'notes' => $notes,
             ]);
 
