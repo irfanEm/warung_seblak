@@ -38,11 +38,20 @@ Route::get('/checkout/error', \App\Presentation\Livewire\Customer\PaymentCallbac
 // Admin Group
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', \App\Presentation\Livewire\Admin\AdminDashboard::class)->name('dashboard');
+
+    // TODO: Tambahkan middleware auth dan role admin (Sudah tersemat di middleware group ini)
     
-    // Menu Management
-    Route::get('/menus', \App\Presentation\Livewire\Admin\Menu\ListMenu::class)->name('menu.index');
-    Route::get('/menus/create', \App\Presentation\Livewire\Admin\Menu\MenuForm::class)->name('menu.create');
-    Route::get('/menus/{menuId}/edit', \App\Presentation\Livewire\Admin\Menu\MenuForm::class)->name('menu.edit');
+    // Menu Management (Livewire 3 Session-based CRUD)
+    Route::get('/menus', \App\Livewire\Admin\MenuList::class)->name('menus.index');
+
+    // Category Management
+    Route::get('/categories', \App\Livewire\Admin\CategoryList::class)->name('categories.index');
+
+    // Topping Management
+    Route::get('/toppings', \App\Livewire\Admin\ToppingList::class)->name('toppings.index');
+
+    // Spiciness Levels Management
+    Route::get('/spiciness', \App\Livewire\Admin\SpicinessLevelList::class)->name('spiciness.index');
 
     // Table Management
     Route::get('/tables', \App\Presentation\Livewire\Admin\Table\ListTable::class)->name('table.index');
