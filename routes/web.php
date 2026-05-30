@@ -27,7 +27,9 @@ Route::get('/menu', function () {
     return view('customer.menu');
 })->name('customer.menu');
 Route::get('/cart', \App\Presentation\Livewire\Customer\Cart::class)->name('customer.cart');
-Route::get('/checkout', \App\Presentation\Livewire\Customer\Checkout::class)->name('customer.checkout');
+Route::get('/checkout', \App\Livewire\Customer\Checkout::class)->name('customer.checkout');
+Route::get('/order/success/{order_number}', \App\Livewire\Customer\OrderSuccess::class)->name('customer.order.success');
+Route::get('/order/tracking/{order_number}', \App\Livewire\Customer\OrderTracking::class)->name('customer.order.tracking');
 Route::get('/payment/{orderNumber}', \App\Presentation\Livewire\Customer\Payment::class)->name('customer.payment');
 Route::get('/checkout/finish', \App\Presentation\Livewire\Customer\PaymentCallback::class)->name('customer.checkout.finish');
 Route::get('/checkout/unfinish', \App\Presentation\Livewire\Customer\PaymentCallback::class)->name('customer.checkout.unfinish');

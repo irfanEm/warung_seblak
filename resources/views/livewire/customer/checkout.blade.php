@@ -1,76 +1,135 @@
-<div class="px-4 py-6">
-    <!-- Header -->
-    <div class="flex items-center mb-6">
-        <a href="{{ route('customer.cart') }}" class="mr-3 text-gray-500 hover:text-gray-700 transition">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+<div class="px-4 py-6 pb-24 space-y-6">
+    <!-- Header with Back Button -->
+    <div class="flex items-center">
+        <a href="{{ Route::has('customer.menu') ? route('customer.menu') : '#' }}" 
+           class="mr-3 text-gray-500 hover:text-gray-700 hover:bg-gray-50 p-2 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
         </a>
-        <h1 class="text-xl font-bold text-gray-900">Selesaikan Pesanan</h1>
+        <h1 class="text-base font-extrabold text-gray-900 tracking-tight">Selesaikan Pesanan</h1>
     </div>
 
-    <!-- Informasi Meja -->
-    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-center justify-between">
-        <div>
-            <p class="text-xs text-amber-800 font-medium">Nomor Meja Anda</p>
-            <p class="text-2xl font-black text-amber-900 leading-none mt-1">Meja {{ $table->table_number ?? '?' }}</p>
+    <!-- Table Information (QR scan confirm banner) -->
+    @if($tableNumber)
+        <div class="bg-orange-50 border border-orange-100 rounded-3xl p-4 flex items-center justify-between shadow-[0_2px_4px_rgba(249,115,22,0.03)]">
+            <div>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Pemesanan Untuk</p>
+                <p class="text-lg font-black text-gray-800 leading-none mt-1">{{ $tableNumber }}</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600">
+                <x-icons.table class="w-6 h-6" />
+            </div>
         </div>
-        <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-amber-600">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-        </div>
-    </div>
+    @endif
 
-    <!-- Ringkasan Pesanan -->
-    <div class="bg-white border border-gray-100 rounded-xl shadow-sm mb-6 overflow-hidden">
-        <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
-            <h2 class="text-sm font-bold text-gray-700">Ringkasan Pesanan</h2>
+    <!-- Order Summary Card -->
+    <div class="bg-white border border-gray-100 rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div class="px-5 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="text-xs font-black text-gray-800 uppercase tracking-wider">Ringkasan Pesanan</h2>
+            <span class="text-[10px] text-gray-400 font-bold">{{ count($items) }} Menu</span>
         </div>
-        <div class="p-4 space-y-3">
-            @foreach($cart as $item)
-                <div class="flex justify-between text-sm">
-                    <div class="flex gap-2 text-gray-800">
-                        <span class="font-medium text-gray-500">{{ $item['quantity'] }}x</span>
+        <div class="p-5 space-y-4">
+            @foreach($items as $index => $item)
+                <div class="flex justify-between items-start text-xs border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+                    <div class="flex gap-2.5 text-gray-850">
+                        <span class="font-extrabold text-orange-500 bg-orange-50 rounded-lg w-7 h-7 flex items-center justify-center shrink-0">
+                            {{ $item['quantity'] }}x
+                        </span>
                         <div>
-                            <span class="font-medium">{{ $item['name'] }}</span>
-                            @if(!empty($item['toppings']) || !empty($item['spiciness_level']))
-                                <div class="text-[10px] text-gray-500 mt-0.5">
-                                    {{ !empty($item['spiciness_level']) ? '[' . $item['spiciness_level']['name'] . ']' : '' }}
-                                    {{ !empty($item['toppings']) ? '+ ' . collect($item['toppings'])->pluck('name')->join(', ') : '' }}
-                                </div>
-                            @endif
+                            <span class="font-bold text-gray-800">{{ $item['name'] }}</span>
+                            
+                            <!-- Spiciness & Toppings details -->
+                            <div class="text-[10px] text-gray-500 mt-1 flex flex-wrap gap-1 items-center">
+                                <span class="text-[9px] font-extrabold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-md border border-red-100/50">
+                                    🔥 {{ $item['spiciness']['name'] }}
+                                </span>
+                                @foreach($item['toppings'] as $topping)
+                                    <span class="text-[9px] font-semibold text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded-md border border-gray-100">
+                                        + {{ $topping['name'] }}
+                                    </span>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                    <span class="font-medium text-gray-900 whitespace-nowrap ml-2">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                    
+                    @php
+                        $itemUnitPrice = (float) $item['price'];
+                        foreach ($item['toppings'] as $topping) {
+                            $itemUnitPrice += (float) $topping['price'];
+                        }
+                        $itemSubtotal = $itemUnitPrice * $item['quantity'];
+                    @endphp
+                    <span class="font-black text-gray-800 whitespace-nowrap ml-2">
+                        Rp {{ number_format($itemSubtotal, 0, ',', '.') }}
+                    </span>
                 </div>
             @endforeach
             
-            <div class="pt-3 mt-3 border-t border-dashed border-gray-200 flex justify-between items-center">
-                <span class="font-bold text-gray-900">Total Pembayaran</span>
-                <span class="text-lg font-black text-amber-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+            <!-- Price Summary -->
+            <div class="pt-4 mt-2 border-t border-dashed border-gray-250 space-y-2">
+                <div class="flex justify-between text-xs text-gray-400">
+                    <span>Subtotal</span>
+                    <span class="font-bold text-gray-700">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between text-xs text-gray-400">
+                    <span>Pajak (0%)</span>
+                    <span class="font-bold text-gray-700">Rp {{ number_format($tax, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-gray-50">
+                    <span class="text-xs font-black text-gray-850 uppercase tracking-wider">Total Pembayaran</span>
+                    <span class="text-base font-black text-orange-500 tracking-tight">
+                        Rp {{ number_format($total, 0, ',', '.') }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Form Data Pemesan -->
-    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4 mb-24">
-        <h2 class="text-sm font-bold text-gray-700 mb-4">Informasi Tambahan</h2>
+    <!-- Contact Information Form -->
+    <div class="bg-white border border-gray-100 rounded-3xl p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-4">
+        <h2 class="text-xs font-black text-gray-800 uppercase tracking-wider border-b border-gray-50 pb-2">Informasi Pemesan</h2>
         
         <div class="space-y-4">
+            <!-- Customer Name Input -->
             <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Pemesan (Opsional)</label>
-                <input type="text" wire:model="customerName" placeholder="Contoh: Ibun" class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Nama Pemesan <span class="text-red-500">*</span></label>
+                <input type="text" 
+                       wire:model="customerName" 
+                       placeholder="Masukkan nama Anda (min. 3 karakter)" 
+                       class="w-full text-xs py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
+                @error('customerName')
+                    <span class="text-[10px] text-red-500 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
+
+            <!-- Customer Phone Input -->
             <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
-                <textarea wire:model="notes" rows="2" placeholder="Contoh: Jangan pakai bawang goreng..." class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Nomor Telepon / WhatsApp <span class="text-red-500">*</span></label>
+                <input type="tel" 
+                       wire:model="customerPhone" 
+                       placeholder="Contoh: 08123456789" 
+                       class="w-full text-xs py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
+                @error('customerPhone')
+                    <span class="text-[10px] text-red-500 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
         </div>
     </div>
 
-    <!-- Bottom Fixed Button -->
-    <div class="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.05)] z-20">
-        <button wire:click="placeOrder" class="w-full flex items-center justify-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition active:scale-[0.98]">
-            <span wire:loading.remove wire:target="placeOrder">Pesan Sekarang</span>
-            <span wire:loading wire:target="placeOrder">Memproses...</span>
+    <!-- Bottom Fixed Pay Button with 44px+ height -->
+    <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white/90 backdrop-blur-md border-t border-gray-100 shadow-[0_-8px_20px_rgba(0,0,0,0.03)] z-20 rounded-t-2xl">
+        <button wire:click="processPayment" 
+                wire:loading.attr="disabled"
+                class="w-full min-h-[48px] flex items-center justify-center bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white text-xs font-black uppercase tracking-wider rounded-2xl shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 active:scale-[0.98] transition-all duration-200 cursor-pointer">
+            <span wire:loading.remove wire:target="processPayment">Konfirmasi & Bayar Sekarang</span>
+            <span wire:loading wire:target="processPayment" class="inline-flex items-center justify-center">
+                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Memproses Pembayaran...
+            </span>
         </button>
     </div>
-
 </div>
