@@ -81,13 +81,18 @@
             <!-- Keranjang -->
             @php $isCartActive = request()->routeIs('customer.cart*') || request()->routeIs('customer.checkout*'); @endphp
             <a href="{{ Route::has('customer.cart') ? route('customer.cart') : '#' }}" 
+               @click.prevent="if (window.location.pathname.endsWith('/menu')) { $dispatch('toggle-cart') } else { window.location.href = '{{ Route::has('customer.cart') ? route('customer.cart') : '#' }}' }"
                class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group relative {{ $isCartActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
                 <div class="p-1 rounded-xl transition-all duration-200 group-hover:bg-orange-50/60 {{ $isCartActive ? 'bg-orange-50 text-orange-500' : '' }}">
                     <x-icons.shopping-cart class="w-5 h-5" />
-                    <!-- Badge Keranjang: Sementara di-hardcode 0 -->
-                    <!-- TODO: Ganti angka hardcode di bawah dengan binding Livewire (contoh: <livewire:customer.cart-badge /> atau {{ session('cart.count', 0) }}) -->
-                    <span class="absolute top-0.5 right-4.5 inline-flex items-center justify-center px-1.5 py-0.5 text-[8px] font-bold leading-none text-white bg-orange-500 rounded-full border border-white">
-                        0
+                    <!-- Badge Keranjang: Dinamis dengan Alpine.js listening to browser events -->
+                    <!-- TODO: Ganti session default di bawah jika menggunakan sinkronisasi database kustom -->
+                    <span x-data="{ count: {{ collect(session('cart.items', []))->sum('quantity') }} }"
+                          @cart-count-updated.window="count = $event.detail"
+                          x-show="count > 0"
+                          class="absolute top-0.5 right-4.5 inline-flex items-center justify-center px-1.5 py-0.5 text-[8px] font-bold leading-none text-white bg-orange-500 rounded-full border border-white"
+                          x-text="count"
+                          style="display: none;">
                     </span>
                 </div>
                 <span class="text-[10px] mt-0.5 tracking-wide font-medium">Keranjang</span>
