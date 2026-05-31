@@ -64,6 +64,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Orders Management
     Route::get('/orders', \App\Livewire\Admin\OrderList::class)->name('orders.index');
+
+    // POS Kasir
+    Route::get('/pos', \App\Livewire\Admin\PosScreen::class)->name('pos');
 });
 
 // POS / Kasir Group
