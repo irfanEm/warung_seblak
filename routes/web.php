@@ -37,7 +37,7 @@ Route::get('/checkout/error', \App\Presentation\Livewire\Customer\PaymentCallbac
 
 // Admin Group
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', \App\Presentation\Livewire\Admin\AdminDashboard::class)->name('dashboard');
+    Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
 
     // TODO: Tambahkan middleware auth dan role admin (Sudah tersemat di middleware group ini)
     
@@ -61,6 +61,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
         if (!$table) abort(404, 'Meja tidak ditemukan');
         return view('admin.tables.print', ['table' => $table]);
     })->name('tables.print');
+
+    // Orders Management
+    Route::get('/orders', \App\Livewire\Admin\OrderList::class)->name('orders.index');
 });
 
 // POS / Kasir Group

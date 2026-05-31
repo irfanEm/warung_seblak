@@ -115,8 +115,8 @@
                 </a>
 
                 <!-- 7. Pesanan -->
-                @php $isPesananActive = request()->routeIs('admin.orders*') || request()->routeIs('admin.order*'); @endphp
-                <a href="{{ Route::has('admin.orders.index') ? route('admin.orders.index') : (Route::has('admin.order.index') ? route('admin.order.index') : '#') }}" 
+                @php $isPesananActive = request()->routeIs('admin.orders*'); @endphp
+                <a href="{{ route('admin.orders.index') }}" 
                    @click="if (window.innerWidth < 1024) sidebarOpen = false"
                    class="flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group {{ $isPesananActive ? 'bg-orange-50 text-orange-600' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
                     <x-icons.shopping-bag class="mr-3 w-5 h-5 {{ $isPesananActive ? 'text-orange-500' : 'text-gray-400 group-hover:text-gray-600' }}" />
