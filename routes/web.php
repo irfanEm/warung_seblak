@@ -67,6 +67,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // POS Kasir
     Route::get('/pos', \App\Livewire\Admin\PosScreen::class)->name('pos');
+
+    // Dapur / Kitchen
+    Route::get('/kitchen', \App\Livewire\Admin\KitchenBoard::class)->name('kitchen');
 });
 
 // POS / Kasir Group

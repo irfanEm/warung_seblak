@@ -132,6 +132,15 @@
                     <span>POS Kasir</span>
                 </a>
 
+                <!-- Dapur -->
+                @php $isKitchenActive = request()->routeIs('admin.kitchen*'); @endphp
+                <a href="{{ route('admin.kitchen') }}" 
+                   @click="if (window.innerWidth < 1024) sidebarOpen = false"
+                   class="flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group {{ $isKitchenActive ? 'bg-orange-50 text-orange-600' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <x-icons.fire class="mr-3 w-5 h-5 {{ $isKitchenActive ? 'text-orange-500' : 'text-gray-400 group-hover:text-gray-600' }}" />
+                    <span>Dapur KDS</span>
+                </a>
+
                 <!-- 8. Promo -->
                 @php $isPromoActive = request()->routeIs('admin.promos*') || request()->routeIs('admin.promo*'); @endphp
                 <a href="{{ Route::has('admin.promos.index') ? route('admin.promos.index') : (Route::has('admin.promo.index') ? route('admin.promo.index') : '#') }}" 
