@@ -106,8 +106,8 @@
                 </a>
 
                 <!-- 6. Meja -->
-                @php $isMejaActive = request()->routeIs('admin.tables*') || request()->routeIs('admin.table*'); @endphp
-                <a href="{{ Route::has('admin.tables.index') ? route('admin.tables.index') : (Route::has('admin.table.index') ? route('admin.table.index') : '#') }}" 
+                @php $isMejaActive = request()->routeIs('admin.tables*'); @endphp
+                <a href="{{ route('admin.tables.index') }}" 
                    @click="if (window.innerWidth < 1024) sidebarOpen = false"
                    class="flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group {{ $isMejaActive ? 'bg-orange-50 text-orange-600' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
                     <x-icons.table class="mr-3 w-5 h-5 {{ $isMejaActive ? 'text-orange-500' : 'text-gray-400 group-hover:text-gray-600' }}" />

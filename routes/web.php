@@ -54,10 +54,13 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/spiciness', \App\Livewire\Admin\SpicinessLevelList::class)->name('spiciness.index');
 
     // Table Management
-    Route::get('/tables', \App\Presentation\Livewire\Admin\Table\ListTable::class)->name('table.index');
-    Route::get('/tables/create', \App\Presentation\Livewire\Admin\Table\TableForm::class)->name('table.create');
-    Route::get('/tables/{tableId}/edit', \App\Presentation\Livewire\Admin\Table\TableForm::class)->name('table.edit');
-    Route::get('/tables/{tableId}/print', [\App\Http\Controllers\TablePrintController::class, 'print'])->name('table.print');
+    Route::get('/tables', \App\Livewire\Admin\TableList::class)->name('tables.index');
+    Route::get('/tables/{id}/print', function ($id) {
+        $tables = session('admin.tables', []);
+        $table = collect($tables)->firstWhere('id', (int) $id);
+        if (!$table) abort(404, 'Meja tidak ditemukan');
+        return view('admin.tables.print', ['table' => $table]);
+    })->name('tables.print');
 });
 
 // POS / Kasir Group
