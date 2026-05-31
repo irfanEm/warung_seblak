@@ -21,7 +21,7 @@
                 <span class="text-xl">🛒</span>
                 <h3 class="font-extrabold text-sm text-gray-800 tracking-tight">Keranjang Belanja</h3>
                 <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-orange-100 text-orange-600">
-                    {{ collect($items)->sum('quantity') }} Item
+                    {{ collect($items ?? [])->sum('quantity') }} Item
                 </span>
             </div>
             
@@ -34,7 +34,7 @@
 
         <!-- Scrollable Items List -->
         <div class="flex-grow overflow-y-auto px-5 py-4 space-y-4 scrollbar-none">
-            @forelse($items as $index => $item)
+            @forelse($items ?? [] as $index => $item)
                 <div wire:key="cart-item-{{ $index }}" 
                      class="flex items-start justify-between p-3.5 bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-xs transition-all duration-200">
                     

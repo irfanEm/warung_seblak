@@ -1,6 +1,6 @@
 <div x-data="{ show: false }" 
-     @show-detail-modal.window="show = true" 
-     @hide-detail-modal.window="show = false"
+     x-on:show-detail-modal.window="show = true" 
+     x-on:hide-detail-modal.window="show = false"
      x-show="show"
      class="fixed inset-0 z-50 overflow-hidden flex items-end justify-center"
      style="display: none;">

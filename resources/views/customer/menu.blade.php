@@ -6,7 +6,6 @@
 @section('content')
     @if(session()->has('table_number'))
         <!-- Konfirmasi Meja Sticky / Top Indicator -->
-        <!-- TODO: Nanti bisa diganti dengan Livewire polling atau interaksi status meja real-time -->
         <div class="mb-4 bg-orange-50 border border-orange-150 rounded-2xl p-3.5 flex items-center justify-between shadow-[0_2px_4px_rgba(249,115,22,0.03)]">
             <div class="flex items-center space-x-2.5">
                 <span class="text-lg">🍽️</span>
@@ -22,9 +21,6 @@
         </div>
     @endif
 
-    <!-- Daftar Menu Makanan & Topping -->
     <livewire:customer.menu-list />
-
-    <!-- Bottom Sheet / Panel Keranjang Belanja -->
     <livewire:customer.cart />
 @endsection
