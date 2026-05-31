@@ -36,7 +36,7 @@
                 type="text" 
                 wire:model.live.debounce.300ms="search" 
                 placeholder="Cari nama menu seblak..." 
-                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-sm transition-all bg-gray-50/30"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-base transition-all bg-gray-50/30"
             >
         </div>
 
@@ -45,7 +45,7 @@
             <span class="text-xs font-bold text-gray-400 uppercase hidden sm:block shrink-0">Filter Kategori:</span>
             <select 
                 wire:model.live="selectedCategory" 
-                class="px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-sm transition-all bg-white"
+                class="px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-base transition-all bg-white"
             >
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
@@ -297,7 +297,7 @@
                                 id="menuName" 
                                 wire:model="form.name"
                                 placeholder="Contoh: Seblak Seafood Spesial, Es Teh Jumbo"
-                                class="w-full px-4 py-2.5 rounded-xl border @error('form.name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl border @error('form.name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                                 required
                             >
                             @error('form.name')
@@ -311,7 +311,7 @@
                             <select 
                                 id="formCategory" 
                                 wire:model="form.category_id"
-                                class="w-full px-4 py-2.5 rounded-xl border @error('form.category_id') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl border @error('form.category_id') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                                 required
                             >
                                 <option value="">-- Pilih Kategori --</option>
@@ -330,7 +330,7 @@
                             <select 
                                 id="formSpiciness" 
                                 wire:model="form.selectedSpicinessLevelId"
-                                class="w-full px-4 py-2.5 rounded-xl border @error('form.selectedSpicinessLevelId') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl border @error('form.selectedSpicinessLevelId') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                                 required
                             >
                                 <option value="">-- Pilih Level Pedas --</option>
@@ -356,7 +356,7 @@
                                     wire:model="form.price"
                                     placeholder="Contoh: 15000"
                                     min="0"
-                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border @error('form.price') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border @error('form.price') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                                     required
                                 >
                             </div>
@@ -373,7 +373,7 @@
                                 id="formImage" 
                                 wire:model="form.image"
                                 placeholder="https://images.unsplash.com/..."
-                                class="w-full px-4 py-2.5 rounded-xl border @error('form.image') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl border @error('form.image') border-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                             >
                             @error('form.image')
                                 <p class="text-xs font-semibold text-red-600 mt-1">{{ $message }}</p>
@@ -388,7 +388,7 @@
                                 wire:model="form.description"
                                 rows="3"
                                 placeholder="Jelaskan bahan-bahan dan rasa menu seblak ini..."
-                                class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-orange-500 focus:border-orange-500 focus:outline-none focus:ring-2 text-base transition-all"
                             ></textarea>
                             @error('form.description')
                                 <p class="text-xs font-semibold text-red-600 mt-1">{{ $message }}</p>

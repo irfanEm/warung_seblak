@@ -187,7 +187,7 @@
                         <!-- Input Nomor Meja -->
                         <div>
                             <label for="table_number" class="block text-sm font-semibold text-gray-700 mb-1">Nomor Meja</label>
-                            <input type="text" id="table_number" wire:model="form.table_number" class="block w-full px-4 py-3 border @error('form.table_number') border-red-500 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror rounded-xl shadow-sm text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-0" placeholder="Contoh: Meja 1, VIP A" required>
+                            <input type="text" id="table_number" wire:model="form.table_number" class="block w-full px-4 py-3 border @error('form.table_number') border-red-500 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror rounded-xl shadow-sm text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-0" placeholder="Contoh: Meja 1, VIP A" required>
                             @error('form.table_number') <span class="mt-1 text-sm text-red-600 block">{{ $message }}</span> @enderror
                         </div>
 

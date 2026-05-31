@@ -97,7 +97,7 @@
                 <input type="text" 
                        wire:model="customerName" 
                        placeholder="Masukkan nama Anda (min. 3 karakter)" 
-                       class="w-full text-xs py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
+                       class="w-full text-base py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
                 @error('customerName')
                     <span class="text-[10px] text-red-500 font-semibold mt-1 block">{{ $message }}</span>
                 @enderror
@@ -109,7 +109,7 @@
                 <input type="tel" 
                        wire:model="customerPhone" 
                        placeholder="Contoh: 08123456789" 
-                       class="w-full text-xs py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
+                       class="w-full text-base py-3 px-4 rounded-2xl border-gray-200/80 shadow-2xs focus:border-orange-500 focus:ring-orange-500/20 transition-all placeholder:text-gray-300" />
                 @error('customerPhone')
                     <span class="text-[10px] text-red-500 font-semibold mt-1 block">{{ $message }}</span>
                 @enderror

@@ -196,7 +196,7 @@
                             id="name" 
                             wire:model.live="name"
                             placeholder="Contoh: Ceker, Dumpling Keju, Pilus"
-                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                             required
                         >
                         @error('name')
@@ -222,7 +222,7 @@
                                 wire:model.live="price"
                                 placeholder="Contoh: 3000"
                                 min="0"
-                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border @error('price') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border @error('price') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                                 required
                             >
                         </div>

@@ -26,39 +26,7 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <input wire:model.live.debounce.300ms="seaVerifikasi dan perbaiki detail-detail berikut pada halaman POS Kasir (PosScreen) untuk Warung Seblak Digital. Pastikan semua aspek sudah terpenuhi. Jika belum, lakukan perbaikan.
-
-**Komponen yang harus diperiksa:**
-- `app/Livewire/Admin/PosScreen.php`
-- `resources/views/livewire/admin/pos-screen.blade.php`
-
-**Daftar verifikasi:**
-
-1. **Konfirmasi Hapus Item di Keranjang**  
-   - Tombol hapus pada setiap item di keranjang harus memiliki konfirmasi `wire:confirm="Yakin ingin menghapus item ini?"` agar tidak terhapus tanpa sengaja.
-
-2. **Validasi Uang Diterima**  
-   - Di modal checkout, pastikan ada pesan error yang jelas jika uang diterima kurang dari total belanja. Bisa menggunakan validasi Livewire dengan `@error('amount_received')` atau setidaknya tombol "Konfirmasi & Cetak Struk" tidak bisa diklik jika uang kurang.
-
-3. **Responsivitas Mobile**  
-   - Pada layar kecil (mobile), pastikan keranjang tidak selalu mengambil setengah layar. Idealnya, keranjang berubah menjadi bottom sheet yang bisa di-toggle dengan tombol "Lihat Keranjang" atau ikon keranjang melayang. Jika belum, tambahkan tombol toggle yang muncul hanya di mobile (`lg:hidden`).
-
-4. **Tap Target 44px**  
-   - Periksa semua tombol interaktif (tambah/menu item, +/- qty, hapus item, checkout, pilih tipe pesanan, konfirmasi) memiliki ukuran minimal `min-h-[44px] min-w-[44px]`. Tambahkan kelas tersebut jika ada yang kurang.
-
-5. **Filter Kategori (Opsional)**  
-   - Jika belum ada, tambahkan baris filter kategori di atas grid menu (horizontal scroll) untuk mempercepat pencarian menu oleh kasir. Ambil daftar kategori dari data menu yang ada di session. Jika tidak memungkinkan dalam satu prompt, minimal tambahkan komentar TODO.
-
-6. **Tombol "Cetak Struk"**  
-   - Pastikan tombol "Konfirmasi & Cetak Struk" memiliki komentar TODO bahwa fungsi cetak akan diintegrasikan nanti (misal: `{{-- TODO: Integrasikan dengan printer thermal atau generate PDF struk --}}`).
-
-7. **Data Dummy yang Konsisten**  
-   - Jika session `admin.menus` kosong, data dummy yang di-generate harus sama persis dengan yang digunakan di Admin MenuList (nama, harga, kategori yang sama). Verifikasi di method `mount()` atau method `getMenus()`.
-
-**Tambahan:**
-- Setelah perbaikan, pastikan tidak ada error sintaks.
-- Jangan mengubah fungsionalitas inti yang sudah berjalan.
-- Berikan ringkasan perubahan yang dilakukan.rch" type="text" placeholder="Cari menu..." class="block w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-orange-500 focus:border-orange-500 min-h-[44px]">
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari menu..." class="block w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-base focus:ring-orange-500 focus:border-orange-500 min-h-[44px]">
             </div>
         </div>
 
@@ -285,7 +253,7 @@
                     @if($orderType === 'dine_in')
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Meja</label>
-                        <select wire:model="selectedTableId" class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-orange-500 focus:border-orange-500 min-h-[44px]">
+                        <select wire:model="selectedTableId" class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-base focus:ring-orange-500 focus:border-orange-500 min-h-[44px]">
                             <option value="">-- Pilih Meja --</option>
                             @foreach($tables as $table)
                                 <option value="{{ $table['id'] }}">{{ $table['table_number'] }}</option>

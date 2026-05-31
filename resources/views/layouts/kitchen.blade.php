@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-gray-950 text-gray-100 antialiased font-sans h-full flex flex-col overflow-hidden">
+<body class="bg-gray-950 text-gray-100 antialiased font-sans h-full flex flex-col overflow-hidden overflow-x-hidden">
 
     <!-- Topbar Dapur -->
     <header class="bg-gray-900 border-b border-gray-800 h-16 flex items-center justify-between px-6 shrink-0 shadow-md">

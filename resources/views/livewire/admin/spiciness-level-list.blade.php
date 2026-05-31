@@ -231,7 +231,7 @@
                             id="name" 
                             wire:model.live="name"
                             placeholder="Contoh: Level 3 (Pedas Sedang), Level 6 (Nangis)"
-                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                             required
                         >
                         @error('name')
@@ -254,7 +254,7 @@
                             placeholder="Contoh: 0, 1, 2, 3..."
                             min="0"
                             max="20"
-                            class="w-full px-4 py-2.5 rounded-xl border @error('level') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                            class="w-full px-4 py-2.5 rounded-xl border @error('level') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                             required
                         >
                         <p class="text-[10px] text-gray-400 mt-1">Digunakan untuk pengurutan tingkat pedas di menu (makin tinggi angka, makin pedas).</p>

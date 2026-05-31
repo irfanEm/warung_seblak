@@ -14,10 +14,10 @@
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex justify-center selection:bg-orange-500 selection:text-white">
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex justify-center selection:bg-orange-500 selection:text-white overflow-x-hidden">
 
     <!-- Main Mobile-First Container -->
-    <div class="w-full max-w-md bg-white min-h-screen shadow-xl flex flex-col relative pb-24 border-x border-gray-100/50">
+    <div class="w-full max-w-md bg-white min-h-screen shadow-xl flex flex-col relative pb-24 border-x border-gray-100/50 overflow-x-hidden">
         
         <!-- Header / Brand -->
         <header class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3.5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
@@ -51,17 +51,17 @@
         @endif
 
         <!-- Main Content Area -->
-        <main class="flex-grow px-4 py-4">
+        <main class="flex-grow px-4 py-4 max-w-full">
             @yield('content')
         </main>
 
         <!-- Bottom Navigation Bar (Fixed in Mobile-First Container) -->
-        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-gray-50/95 backdrop-blur-md border-t border-gray-200/80 px-3 py-2 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] flex justify-between items-center rounded-t-2xl">
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-gray-50/95 backdrop-blur-md border-t border-gray-200/80 px-3 py-2 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] flex justify-between items-center rounded-t-2xl">
             
             <!-- Home -->
             @php $isHomeActive = request()->routeIs('customer.home*'); @endphp
             <a href="{{ Route::has('customer.home') ? route('customer.home') : '#' }}" 
-               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group {{ $isHomeActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
+               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group min-h-[44px] min-w-[44px] {{ $isHomeActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
                 <div class="p-1 rounded-xl transition-all duration-200 group-hover:bg-orange-50/60 {{ $isHomeActive ? 'bg-orange-50 text-orange-500' : '' }}">
                     <x-icons.home class="w-5 h-5" />
                 </div>
@@ -71,7 +71,7 @@
             <!-- Menu -->
             @php $isMenuActive = request()->routeIs('customer.menu*') || request()->routeIs('customer.scan*'); @endphp
             <a href="{{ Route::has('customer.menu') ? route('customer.menu') : '#' }}" 
-               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group {{ $isMenuActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
+               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group min-h-[44px] min-w-[44px] {{ $isMenuActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
                 <div class="p-1 rounded-xl transition-all duration-200 group-hover:bg-orange-50/60 {{ $isMenuActive ? 'bg-orange-50 text-orange-500' : '' }}">
                     <x-icons.clipboard class="w-5 h-5" />
                 </div>
@@ -82,7 +82,7 @@
             @php $isCartActive = request()->routeIs('customer.cart*') || request()->routeIs('customer.checkout*'); @endphp
             <a href="{{ Route::has('customer.cart') ? route('customer.cart') : '#' }}" 
                @click.prevent="if (window.location.pathname.endsWith('/menu')) { $dispatch('toggle-cart') } else { window.location.href = '{{ Route::has('customer.cart') ? route('customer.cart') : '#' }}' }"
-               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group relative {{ $isCartActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
+               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group relative min-h-[44px] min-w-[44px] {{ $isCartActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
                 <div class="p-1 rounded-xl transition-all duration-200 group-hover:bg-orange-50/60 {{ $isCartActive ? 'bg-orange-50 text-orange-500' : '' }}">
                     <x-icons.shopping-cart class="w-5 h-5" />
                     <!-- Badge Keranjang: Dinamis dengan Alpine.js listening to browser events -->
@@ -101,7 +101,7 @@
             <!-- Pesanan Saya -->
             @php $isOrdersActive = request()->routeIs('customer.orders*') || request()->routeIs('customer.payment*'); @endphp
             <a href="{{ Route::has('customer.orders') ? route('customer.orders') : '#' }}" 
-               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group {{ $isOrdersActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
+               class="flex flex-col items-center justify-center flex-1 py-1 transition-all duration-200 group min-h-[44px] min-w-[44px] {{ $isOrdersActive ? 'text-orange-500 font-semibold' : 'text-gray-500 hover:text-orange-400' }}">
                 <div class="p-1 rounded-xl transition-all duration-200 group-hover:bg-orange-50/60 {{ $isOrdersActive ? 'bg-orange-50 text-orange-500' : '' }}">
                     <x-icons.document-text class="w-5 h-5" />
                 </div>

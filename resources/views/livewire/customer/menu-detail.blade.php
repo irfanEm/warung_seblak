@@ -94,9 +94,9 @@
              <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
                  <!-- Quantity Counter -->
                  <div class="flex items-center space-x-3 bg-white p-1 rounded-2xl border border-gray-150 shadow-xs">
-                     <button wire:click="decrement" class="w-8 h-8 flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl transition-all active:scale-90 font-extrabold">-</button>
+                     <button wire:click="decrement" class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl transition-all active:scale-90 font-extrabold">-</button>
                      <span class="text-xs font-extrabold text-gray-800 w-6 text-center">{{ $quantity }}</span>
-                     <button wire:click="increment" class="w-8 h-8 flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl transition-all active:scale-90 font-extrabold">+</button>
+                     <button wire:click="increment" class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl transition-all active:scale-90 font-extrabold">+</button>
                  </div>
 
                  <!-- Add to Cart Button -->

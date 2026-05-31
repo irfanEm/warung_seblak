@@ -205,7 +205,7 @@
                             id="name" 
                             wire:model.live="name"
                             placeholder="Contoh: Makanan Berat, Snack Sehat"
-                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm transition-all"
+                            class="w-full px-4 py-2.5 rounded-xl border @error('name') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base transition-all"
                             required
                         >
                         @error('name')
@@ -229,7 +229,7 @@
                             id="slug" 
                             wire:model="slug"
                             placeholder="contoh-makanan-berat"
-                            class="w-full px-4 py-2.5 rounded-xl border @error('slug') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-sm font-mono transition-all"
+                            class="w-full px-4 py-2.5 rounded-xl border @error('slug') border-red-300 bg-red-50/30 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-orange-500 focus:border-orange-500 @enderror focus:outline-none focus:ring-2 text-base font-mono transition-all"
                             required
                         >
                         @error('slug')
