@@ -22,15 +22,8 @@ class Checkout extends Component
         }
 
         $tableId = session('table_id');
-        if (!$tableId) {
-            session()->flash('message', 'Anda belum memilih/scan meja.');
-            session()->flash('message_type', 'error');
-            return redirect()->route('customer.menu');
-        }
-
-        $this->table = Table::find($tableId);
-        if (!$this->table) {
-            return redirect()->route('customer.menu');
+        if ($tableId) {
+            $this->table = Table::find($tableId);
         }
     }
 
@@ -41,6 +34,8 @@ class Checkout extends Component
             'customerName' => 'nullable|string|max:100',
             'notes' => 'nullable|string|max:255',
         ]);
+        
+        $this->customerName = strip_tags($this->customerName);
 
         try {
             // 1. Eksekusi Action Pembuatan Pesanan (status pending)
@@ -66,13 +61,14 @@ class Checkout extends Component
             // 3. Panggil Gateway Midtrans
             $snapToken = \App\Infrastructure\Payment\MidtransGateway::createTransaction($order, $itemDetails);
 
-            // 4. Update status ke payment_pending
-            $order->update(['status' => 'payment_pending']);
+            // 4. Update status ke payment_pending dan simpan snap_token
+            $order->update([
+                'status' => 'payment_pending',
+                'snap_token' => $snapToken
+            ]);
             
-            // 5. Bersihkan session cart dan flash token
-            session()->forget('cart');
+            // 5. Dispatch event update cart (jangan hapus session di sini)
             $this->dispatch('cartUpdated');
-            session()->flash('snap_token', $snapToken);
 
             // 6. Redirect ke halaman Payment
             return redirect()->route('customer.payment', ['orderNumber' => $order->order_number]);

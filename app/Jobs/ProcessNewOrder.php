@@ -43,7 +43,7 @@ class ProcessNewOrder implements ShouldQueue
         // event(new OrderCreatedForKitchen($order));
         
         // Contoh: Update status (bisa dilakukan sebelum atau sesudah broadcast)
-        $order->update(['status' => 'processing']);
+        $order->update(['status' => 'confirmed']);
         
         Log::info("Pesanan {$this->orderId} berhasil diproses oleh Worker.");
     }

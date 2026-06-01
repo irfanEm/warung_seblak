@@ -17,8 +17,14 @@ class PaymentNotificationController extends Controller
         try {
             $notification = new \Midtrans\Notification();
             
-            // Note: in local environments using ngrok, signature verification might need
-            // specific headers handling, but for standard production it works securely.
+            // Verifikasi signature key
+            $serverKey = config('midtrans.server_key');
+            $signatureKey = hash('sha512', $notification->order_id . $notification->status_code . $notification->gross_amount . $serverKey);
+            
+            if ($signatureKey !== $notification->signature_key) {
+                Log::warning("Midtrans Notification: Invalid signature key for Order {$notification->order_id}.");
+                return response()->json(['message' => 'Invalid signature key'], 403);
+            }
             
             $transactionStatus = $notification->transaction_status;
             $orderId = $notification->order_id;
@@ -37,6 +43,9 @@ class PaymentNotificationController extends Controller
                     'status' => 'paid',
                     'midtrans_transaction_id' => $transactionId
                 ]);
+                // Membersihkan keranjang (Catatan: ini tidak akan langsung memengaruhi browser user 
+                // karena berada di context webhook, tapi mekanisme clearing yang lebih kompleks bisa diatur)
+                session()->forget('cart');
             } else if ($transactionStatus == 'pending') {
                 $order->update(['status' => 'payment_pending']);
             } else if ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {

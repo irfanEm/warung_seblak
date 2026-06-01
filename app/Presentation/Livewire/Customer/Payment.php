@@ -14,11 +14,9 @@ class Payment extends Component
     {
         $this->order = Order::where('order_number', $orderNumber)->firstOrFail();
         
-        $token = session('snap_token');
+        $token = $this->order->snap_token;
         if (!$token) {
-            // Jika token tidak ada di session (misal user refresh page), 
-            // kita bisa redirect atau harusnya generate ulang jika belum dibayar.
-            // Untuk flow ini kita akan redirect ke halaman error atau menu jika tidak ada.
+            // Jika token tidak ada di DB, pesanan mungkin belum siap dibayar
             session()->flash('message', 'Sesi pembayaran tidak valid atau sudah kadaluarsa.');
             return redirect()->route('customer.menu');
         }

@@ -48,7 +48,7 @@ class ListTable extends Component
             
             $path = "qrcodes/tables/{$table->token}.png";
             $absolutePath = Storage::disk('public')->path($path);
-            $url = route('customer.menu', $table->token);
+            $url = route('customer.scan', $table->token);
 
             // Generate gambar QR Code langsung ke path absolut
             QrCode::size(300)->format('png')->generate($url, $absolutePath);
@@ -95,24 +95,7 @@ class ListTable extends Component
         }
     }
 
-    private function createQrImage(Table $table)
-    {
-        // Pastikan direktori ada
-        Storage::disk('public')->makeDirectory('qrcodes/tables');
-        
-        $path = "qrcodes/tables/{$table->token}.png";
-        $url = route('customer.menu', $table->token);
 
-        // Path absolut untuk menyimpan gambar menggunakan \SimpleSoftwareIO\QrCode\Facades\QrCode
-        $absolutePath = Storage::disk('public')->path($path);
-
-        // Generate gambar QR Code dengan resolusi 300x300 format PNG dan simpan ke file
-        QrCode::size(300)->format('png')->generate($url, $absolutePath);
-
-        // Update path di database
-        $table->qr_code_image_path = $path;
-        $table->save();
-    }
 
     public function render()
     {

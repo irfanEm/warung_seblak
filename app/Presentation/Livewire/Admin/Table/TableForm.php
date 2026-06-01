@@ -55,7 +55,7 @@ class TableForm extends Component
             'table_number' => $this->table_number,
             'is_active' => (bool) ($this->is_active ?? true),
             'status' => $this->status ?: 'available',
-            'outlet_id' => 1, // Placeholder jika single-outlet
+            'outlet_id' => auth()->user()->outlet_id ?? 1, // Placeholder jika single-outlet
         ];
 
         if ($this->tableId) {

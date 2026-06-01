@@ -29,9 +29,9 @@ class Login extends Component
             if ($user->hasRole('Admin')) {
                 return redirect()->intended(route('admin.menu.index'));
             } elseif ($user->hasRole('Kasir')) {
-                return redirect()->intended(route('pos.orders'));
+                return redirect()->intended(route('pos.index'));
             } elseif ($user->hasRole('Dapur')) {
-                return redirect()->intended(route('kitchen.board'));
+                return redirect()->intended(route('kitchen.index'));
             } elseif ($user->hasRole('Driver')) {
                 return redirect()->intended(route('driver.deliveries'));
             }

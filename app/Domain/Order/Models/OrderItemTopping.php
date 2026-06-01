@@ -11,11 +11,11 @@ class OrderItemTopping extends Model
     // No timestamps since pivot
     public $timestamps = false;
     
-    // No auto-increment ID
-    public $incrementing = false;
+    // Use auto-increment ID
+    public $incrementing = true;
 
-    // Remove primary key to simplify, or define composite
-    protected $primaryKey = null;
+    // Define primary key
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'order_item_id', 'topping_id', 'topping_name', 'price'

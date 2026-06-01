@@ -22,9 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Livewire\Livewire::component('customer.cart-badge', \App\Presentation\Livewire\Customer\CartBadge::class);
-        \Livewire\Livewire::component('customer.customer-menu', \App\Presentation\Livewire\Customer\CustomerMenu::class);
-        \Livewire\Livewire::component('customer.cart', \App\Presentation\Livewire\Customer\Cart::class);
-        \Livewire\Livewire::component('customer.checkout', \App\Presentation\Livewire\Customer\Checkout::class);
+        // Auto-discovery via config/livewire.php class_namespace
     }
 }

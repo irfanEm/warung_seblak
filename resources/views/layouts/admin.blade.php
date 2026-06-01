@@ -42,6 +42,9 @@
                 <a href="{{ route('pos.index') }}" target="_blank" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('pos.index') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">
                     <span class="mr-2">🏪</span> POS / Kasir
                 </a>
+                <a href="{{ route('pos.history') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('pos.history') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">
+                    <span class="mr-2">🕒</span> Riwayat POS
+                </a>
                 @endrole
 
                 @role('Admin|Dapur')

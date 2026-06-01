@@ -67,7 +67,7 @@ class MenuForm extends Component
         $this->validate();
 
         $data = [
-            'outlet_id' => 1, // Asumsi single tenant sementara
+            'outlet_id' => auth()->user()->outlet_id ?? 1, // Parameterisasi outlet
             'category_id' => $this->category_id,
             'name' => $this->name,
             'description' => $this->description,

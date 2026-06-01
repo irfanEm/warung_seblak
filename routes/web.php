@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/menu');
 
 // Autentikasi
 Route::middleware('guest')->group(function () {
@@ -21,8 +19,9 @@ Route::post('/logout', function () {
 // Rute Publik (Customer Scan & Pemesanan)
 Route::get('/menu', \App\Presentation\Livewire\Customer\CustomerMenu::class)->name('customer.menu');
 Route::get('/menu/{token}', [\App\Http\Controllers\CustomerMenuController::class, 'scan'])
-    ->where('token', '[A-Za-z0-9]+')
+    ->where('token', '[A-Za-z0-9\-\_]+')
     ->name('customer.scan');
+Route::get('/orders', \App\Presentation\Livewire\Customer\OrderLookup::class)->name('customer.orders');
 Route::get('/cart', \App\Presentation\Livewire\Customer\Cart::class)->name('customer.cart');
 Route::get('/checkout', \App\Presentation\Livewire\Customer\Checkout::class)->name('customer.checkout');
 Route::get('/payment/{orderNumber}', \App\Presentation\Livewire\Customer\Payment::class)->name('customer.payment');

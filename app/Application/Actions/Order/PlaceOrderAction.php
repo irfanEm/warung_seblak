@@ -29,6 +29,10 @@ class PlaceOrderAction
                 $outletId = Outlet::first()?->id;
             }
 
+            if (!$outletId) {
+                throw new \Exception('Outlet tidak ditemukan. Pastikan sudah ada outlet terdaftar.');
+            }
+
             // 2. Hitung subtotal
             $subtotal = collect($cart)->sum('subtotal');
             $tax = 0; // Tambahkan tax logic jika diperlukan nanti
@@ -43,7 +47,7 @@ class PlaceOrderAction
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'outlet_id' => $outletId,
-                'type' => $tableId ? 'dine_in' : 'delivery',
+                'type' => $tableId ? 'dine_in' : 'takeaway',
                 'table_id' => $tableId,
                 'customer_name' => $customerName,
                 'customer_phone' => $customerPhone,

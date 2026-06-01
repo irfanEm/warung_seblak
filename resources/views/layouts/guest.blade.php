@@ -11,7 +11,7 @@
 
     <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <div class="mb-6 text-center">
-            <h1 class="text-3xl font-extrabold text-indigo-600">Warung Seblak</h1>
+            <h1 class="text-3xl font-extrabold text-amber-600">Warung Seblak</h1>
             <p class="text-sm text-gray-500 mt-2">Silakan login untuk melanjutkan</p>
         </div>
         
