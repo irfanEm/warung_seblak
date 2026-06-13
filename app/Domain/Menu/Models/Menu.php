@@ -15,7 +15,7 @@ class Menu extends Model
     ];
 
     protected $casts = [
-        'price' => 'float',
+        'price' => 'integer',
         'is_available' => 'boolean',
         'stock_quantity' => 'integer',
     ];

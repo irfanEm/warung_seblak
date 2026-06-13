@@ -3,6 +3,8 @@
 namespace App\Presentation\Livewire\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class Login extends Component
@@ -20,7 +22,18 @@ class Login extends Component
     {
         $this->validate();
 
+        // Rate limiting: 5 attempts per minute per IP
+        $key = 'login-attempts-' . request()->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            throw ValidationException::withMessages([
+                'email' => 'Terlalu banyak percobaan login. Coba lagi dalam 1 menit.',
+            ]);
+        }
+
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+            // Successful login — reset the rate limiter
+            RateLimiter::clear($key);
             session()->regenerate();
 
             $user = Auth::user();
@@ -39,6 +52,9 @@ class Login extends Component
             // Fallback
             return redirect('/');
         }
+
+        // Failed login — increment the rate limiter
+        RateLimiter::hit($key, 60);
 
         session()->flash('error', 'Kredensial yang diberikan tidak cocok dengan data kami.');
     }

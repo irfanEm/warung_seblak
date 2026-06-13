@@ -38,13 +38,13 @@
                             @endif
                         </div>
                     </div>
-                    <span class="font-medium text-gray-900 whitespace-nowrap ml-2">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                    <span class="font-medium text-gray-900 whitespace-nowrap ml-2">{{ formatRupiah($item['subtotal']) }}</span>
                 </div>
             @endforeach
             
             <div class="pt-3 mt-3 border-t border-dashed border-gray-200 flex justify-between items-center">
                 <span class="font-bold text-gray-900">Total Pembayaran</span>
-                <span class="text-lg font-black text-amber-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                <span class="text-lg font-black text-amber-600">{{ formatRupiah($total) }}</span>
             </div>
         </div>
     </div>

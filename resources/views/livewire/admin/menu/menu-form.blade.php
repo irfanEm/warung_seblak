@@ -58,7 +58,7 @@
                     @forelse($allToppings as $topping)
                         <label class="flex items-center">
                             <input type="checkbox" wire:model="toppings" value="{{ $topping->id }}" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <span class="ml-2 text-sm text-gray-600">{{ $topping->name }} (+Rp {{ number_format($topping->price, 0, ',', '.') }})</span>
+                            <span class="ml-2 text-sm text-gray-600">{{ $topping->name }} ({{ formatRupiah($topping->price) }})</span>
                         </label>
                     @empty
                         <p class="text-sm text-gray-500">Belum ada topping tersedia.</p>

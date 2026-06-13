@@ -48,7 +48,7 @@
                     <p class="text-sm text-gray-500 mb-4">{{ $menu->category->name ?? 'Uncategorized' }}</p>
                     
                     <div class="mt-auto flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-900">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+                        <span class="text-lg font-bold text-gray-900">{{ formatRupiah($menu->price) }}</span>
                         
                         <div class="flex space-x-2" x-data="{ showModal: false }">
                             <a href="{{ route('admin.menu.edit', $menu->id) }}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition" title="Edit">

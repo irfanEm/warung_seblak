@@ -8,7 +8,7 @@
             <p class="text-sm font-bold text-gray-900 mb-3">{{ $order->order_number }}</p>
             
             <p class="text-xs text-gray-500 font-medium mb-1">Total Tagihan</p>
-            <p class="text-2xl font-black text-amber-600">Rp {{ number_format($order->total, 0, ',', '.') }}</p>
+            <p class="text-2xl font-black text-amber-600">{{ formatRupiah($order->total) }}</p>
         </div>
 
         <!-- Tombol Bayar -->

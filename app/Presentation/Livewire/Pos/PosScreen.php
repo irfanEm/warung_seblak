@@ -222,13 +222,13 @@ class PosScreen extends Component
     }
 
     /**
-     * Retrieve aggregate price of the entire cart.
+     * Retrieve aggregate price of the entire cart (in cents/sen).
      *
-     * @return float
+     * @return int
      */
-    public function getCartTotal(): float
+    public function getCartTotal(): int
     {
-        return collect($this->cart)->sum('subtotal');
+        return (int) collect($this->cart)->sum('subtotal');
     }
 
     /**
@@ -248,7 +248,7 @@ class PosScreen extends Component
             return;
         }
 
-        $this->cashAmount = $this->getCartTotal(); // Autofill exact money as starting helper
+        $this->cashAmount = intdiv($this->getCartTotal(), 100); // Autofill exact total in Rupiah
         $this->showPaymentModal = true;
     }
 
@@ -261,13 +261,14 @@ class PosScreen extends Component
     }
 
     /**
-     * Real-time calculation of change owed to the customer.
+     * Real-time calculation of change owed to the customer (in cents/sen).
      *
-     * @return float
+     * @return int
      */
-    public function calculateChange(): float
+    public function calculateChange(): int
     {
-        return max(0, floatval($this->cashAmount) - $this->getCartTotal());
+        $cashInCents = (int) (floatval($this->cashAmount) * 100);
+        return max(0, $cashInCents - $this->getCartTotal());
     }
 
     /**
@@ -288,9 +289,10 @@ class PosScreen extends Component
 
         $total = $this->getCartTotal();
 
-        // Validate cashier cash input
+        // Validate cashier cash input (cashAmount is in Rupiah, total is in cents)
         if ($this->paymentMethod === 'tunai') {
-            if (floatval($this->cashAmount) < $total) {
+            $cashInCents = (int) (floatval($this->cashAmount) * 100);
+            if ($cashInCents < $total) {
                 $this->addError('cashAmount', 'Uang tunai pembayaran tidak mencukupi.');
                 return;
             }
@@ -315,8 +317,8 @@ class PosScreen extends Component
         // Format premium outcome notice
         $successMsg = "Transaksi {$order->order_number} berhasil disimpan!";
         if ($this->paymentMethod === 'tunai') {
-            $change = floatval($this->cashAmount) - $total;
-            $successMsg .= " Kembalian: Rp " . number_format($change, 0, ',', '.');
+            $change = $this->calculateChange();
+            $successMsg .= " Kembalian: " . formatRupiah($change);
         }
 
         // Reset POS Terminal state

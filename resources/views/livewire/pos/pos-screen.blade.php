@@ -99,7 +99,7 @@
                                     
                                     <!-- Price Tag Badge Overlay -->
                                     <div class="absolute bottom-2 left-2 bg-gray-900/80 text-white rounded-lg px-2 py-0.5 text-xs font-black backdrop-blur-xs">
-                                        Rp{{ number_format($menu->price, 0, ',', '.') }}
+                                        {{ formatRupiah($menu->price) }}
                                     </div>
                                 </div>
                                 
@@ -215,7 +215,7 @@
                             <div class="flex items-center justify-between border-t border-gray-100 pt-2 shrink-0">
                                 <!-- Price text -->
                                 <span class="text-xs font-black text-amber-600">
-                                    Rp{{ number_format($item['subtotal'], 0, ',', '.') }}
+                                    {{ formatRupiah($item['subtotal']) }}
                                 </span>
 
                                 <!-- Inc/Dec Controls -->
@@ -282,7 +282,7 @@
                     </div>
                     <div class="flex justify-between text-base font-black text-gray-800">
                         <span>Total Tagihan</span>
-                        <span class="text-amber-600">Rp{{ number_format($this->getCartTotal(), 0, ',', '.') }}</span>
+                        <span class="text-amber-600">{{ formatRupiah($this->getCartTotal()) }}</span>
                     </div>
                 </div>
 
@@ -318,7 +318,7 @@
                     <div class="p-5 border-b border-gray-150 bg-gray-50 flex items-center justify-between shrink-0">
                         <div>
                             <h2 class="text-base font-extrabold text-gray-800 leading-snug">{{ $selectedMenu->name }}</h2>
-                            <p class="text-xs text-amber-600 font-bold mt-0.5">Base Price: Rp{{ number_format($selectedMenu->price, 0, ',', '.') }}</p>
+                            <p class="text-xs text-amber-600 font-bold mt-0.5">Base Price: {{ formatRupiah($selectedMenu->price) }}</p>
                         </div>
                         <button 
                             wire:click="closeModal" 
@@ -347,7 +347,7 @@
                                                 >
                                                 <span class="ml-3 text-xs font-bold text-gray-700">{{ $topping->name }}</span>
                                             </div>
-                                            <span class="text-xs font-medium text-gray-500">+ Rp{{ number_format($topping->price, 0, ',', '.') }}</span>
+                                            <span class="text-xs font-medium text-gray-500">+ {{ formatRupiah($topping->price) }}</span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -451,7 +451,7 @@
                         <div class="bg-amber-50/40 border border-amber-500/15 rounded-xl p-4 flex justify-between items-center">
                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Pembayaran</span>
                             <span class="text-xl font-black text-amber-600">
-                                Rp{{ number_format($this->getCartTotal(), 0, ',', '.') }}
+                                {{ formatRupiah($this->getCartTotal()) }}
                             </span>
                         </div>
 
@@ -510,7 +510,7 @@
                                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-150 flex justify-between items-center">
                                     <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Kembalian</span>
                                     <span class="text-lg font-black text-emerald-600">
-                                        Rp{{ number_format($this->calculateChange(), 0, ',', '.') }}
+                                        {{ formatRupiah($this->calculateChange()) }}
                                     </span>
                                 </div>
                             </div>

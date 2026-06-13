@@ -22,31 +22,31 @@ class MenuSeeder extends Seeder
 
         $menus = [
             [
-                'name' => 'Seblak Original', 'price' => 12000, 'category_slug' => 'makanan',
+                'name' => 'Seblak Original', 'price' => 1200000, 'category_slug' => 'makanan',
                 'toppings' => ['Telur', 'Kerupuk'], 'spiciness' => ['Level 1', 'Level 2']
             ],
             [
-                'name' => 'Seblak Komplit', 'price' => 20000, 'category_slug' => 'makanan',
+                'name' => 'Seblak Komplit', 'price' => 2000000, 'category_slug' => 'makanan',
                 'toppings' => ['Telur', 'Ceker', 'Mie', 'Keju'], 'spiciness' => ['Level 1', 'Level 2', 'Level 3']
             ],
             [
-                'name' => 'Seblak Ceker', 'price' => 15000, 'category_slug' => 'makanan',
+                'name' => 'Seblak Ceker', 'price' => 1500000, 'category_slug' => 'makanan',
                 'toppings' => ['Ceker'], 'spiciness' => ['Level 2', 'Level 3']
             ],
             [
-                'name' => 'Baso Aci Kuah', 'price' => 10000, 'category_slug' => 'makanan',
+                'name' => 'Baso Aci Kuah', 'price' => 1000000, 'category_slug' => 'makanan',
                 'toppings' => ['Telur'], 'spiciness' => ['Tidak Pedas', 'Level 1']
             ],
             [
-                'name' => 'Es Teh Manis', 'price' => 5000, 'category_slug' => 'minuman',
+                'name' => 'Es Teh Manis', 'price' => 500000, 'category_slug' => 'minuman',
                 'toppings' => [], 'spiciness' => []
             ],
             [
-                'name' => 'Es Jeruk', 'price' => 7000, 'category_slug' => 'minuman',
+                'name' => 'Es Jeruk', 'price' => 700000, 'category_slug' => 'minuman',
                 'toppings' => [], 'spiciness' => []
             ],
             [
-                'name' => 'Tahu Crispy', 'price' => 8000, 'category_slug' => 'snack',
+                'name' => 'Tahu Crispy', 'price' => 800000, 'category_slug' => 'snack',
                 'toppings' => ['Sosis'], 'spiciness' => ['Level 1']
             ]
         ];

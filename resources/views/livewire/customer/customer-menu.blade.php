@@ -52,7 +52,7 @@
                         <p class="text-xs text-gray-500 mt-1 line-clamp-1">{{ $menu->description }}</p>
                     </div>
                     <div class="mt-3 flex items-end justify-between">
-                        <span class="text-amber-600 font-bold text-sm">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+                        <span class="text-amber-600 font-bold text-sm">{{ formatRupiah($menu->price) }}</span>
                         <!-- Tombol Add -->
                         <button wire:click="openAddModal({{ $menu->id }})" class="h-8 w-8 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-sm transition transform active:scale-95">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -80,7 +80,7 @@
             <div class="flex justify-between items-start mb-4">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900">{{ $selectedMenu->name }}</h2>
-                    <p class="text-amber-600 font-bold mt-1">Rp {{ number_format($selectedMenu->price, 0, ',', '.') }}</p>
+                    <p class="text-amber-600 font-bold mt-1">{{ formatRupiah($selectedMenu->price) }}</p>
                 </div>
                 <button @click="$wire.closeModal()" class="text-gray-400 hover:text-gray-600 p-1 bg-gray-100 rounded-full">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -98,7 +98,7 @@
                             <input type="checkbox" wire:model="selectedToppings" value="{{ $topping->id }}" class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
                             <span class="ml-3 text-sm text-gray-700">{{ $topping->name }}</span>
                         </div>
-                        <span class="text-sm text-gray-500">+ Rp {{ number_format($topping->price, 0, ',', '.') }}</span>
+                        <span class="text-sm text-gray-500">+ {{ formatRupiah($topping->price) }}</span>
                     </label>
                     @endforeach
                 </div>

@@ -32,7 +32,7 @@
                 <div>
                     <span class="block text-[10px] uppercase font-black tracking-wider text-emerald-600/80">Pendapatan Shift</span>
                     <span class="block text-lg font-black text-emerald-950 mt-0.5">
-                        Rp{{ number_format($totalRevenue, 0, ',', '.') }}
+                        {{ formatRupiah($totalRevenue) }}
                     </span>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                                         {{ $order->customer_name ?: '-' }}
                                     </td>
                                     <td class="py-3.5 px-6 font-black text-gray-800">
-                                        Rp{{ number_format($order->total, 0, ',', '.') }}
+                                        {{ formatRupiah($order->total) }}
                                     </td>
                                     <td class="py-3.5 px-6 text-center">
                                         @if($order->status === 'paid')
@@ -202,7 +202,7 @@
                                                                             <span class="text-gray-400">Topping:</span>
                                                                             @foreach($item->toppings as $topping)
                                                                                 <span class="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded text-[9px] font-medium">
-                                                                                    + {{ $topping->topping_name }} (Rp{{ number_format($topping->price, 0, ',', '.') }})
+                                                                                    + {{ $topping->topping_name }} ({{ formatRupiah($topping->price) }})
                                                                                 </span>
                                                                             @endforeach
                                                                         @endif
@@ -211,7 +211,7 @@
                                                                 
                                                                 <!-- Computed subtotal -->
                                                                 <span class="font-extrabold text-gray-700">
-                                                                    Rp{{ number_format($item->subtotal, 0, ',', '.') }}
+                                                                    {{ formatRupiah($item->subtotal) }}
                                                                 </span>
                                                             </li>
                                                         @endforeach
@@ -224,7 +224,7 @@
                                                         </div>
                                                         <div class="font-black text-gray-800 space-x-1">
                                                             <span>Total Tagihan:</span>
-                                                            <span class="text-amber-600">Rp{{ number_format($order->total, 0, ',', '.') }}</span>
+                                                            <span class="text-amber-600">{{ formatRupiah($order->total) }}</span>
                                                         </div>
                                                     </div>
                                                 </div>

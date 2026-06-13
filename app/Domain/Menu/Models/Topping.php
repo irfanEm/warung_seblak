@@ -12,7 +12,7 @@ class Topping extends Model
     protected $fillable = ['outlet_id', 'name', 'price'];
 
     protected $casts = [
-        'price' => 'float',
+        'price' => 'integer',
     ];
 
     public function outlet(): BelongsTo

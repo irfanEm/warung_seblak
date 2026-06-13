@@ -22,7 +22,7 @@ class OrderItemTopping extends Model
     ];
 
     protected $casts = [
-        'price' => 'float',
+        'price' => 'integer',
     ];
 
     public function orderItem(): BelongsTo

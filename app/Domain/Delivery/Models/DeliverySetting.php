@@ -14,9 +14,9 @@ class DeliverySetting extends Model
     ];
 
     protected $casts = [
-        'base_rate_per_km' => 'float',
-        'minimum_charge' => 'float',
-        'free_delivery_min_order' => 'float',
+        'base_rate_per_km' => 'integer',
+        'minimum_charge' => 'integer',
+        'free_delivery_min_order' => 'integer',
         'max_delivery_distance' => 'float',
     ];
 

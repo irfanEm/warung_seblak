@@ -15,9 +15,9 @@ class DeliverySettingSeeder extends Seeder
         DeliverySetting::firstOrCreate(
             ['outlet_id' => $outlet->id],
             [
-                'base_rate_per_km' => 3000,
-                'minimum_charge' => 8000,
-                'free_delivery_min_order' => 50000,
+                'base_rate_per_km' => 300000,
+                'minimum_charge' => 800000,
+                'free_delivery_min_order' => 5000000,
                 'max_delivery_distance' => 10,
             ]
         );

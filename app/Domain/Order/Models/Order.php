@@ -18,11 +18,11 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'subtotal' => 'float',
-        'tax' => 'float',
-        'delivery_fee' => 'float',
-        'discount' => 'float',
-        'total' => 'float',
+        'subtotal' => 'integer',
+        'tax' => 'integer',
+        'delivery_fee' => 'integer',
+        'discount' => 'integer',
+        'total' => 'integer',
     ];
 
     public function outlet(): BelongsTo

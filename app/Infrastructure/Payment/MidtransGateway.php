@@ -27,7 +27,7 @@ class MidtransGateway
         $params = [
             'transaction_details' => [
                 'order_id' => $order->order_number,
-                'gross_amount' => (int) $order->total,
+                'gross_amount' => intdiv((int) $order->total, 100), // Convert cents to Rupiah
             ],
             'customer_details' => [
                 'first_name' => $order->customer_name ?? 'Pelanggan',

@@ -163,7 +163,7 @@
                                             @foreach($item->toppings as $topping)
                                                 <div class="flex items-center justify-between text-[11px]">
                                                     <span>+ {{ $topping->topping_name }}</span>
-                                                    <span class="text-gray-500">Rp{{ number_format($topping->price, 0, ',', '.') }}</span>
+                                                    <span class="text-gray-500">{{ formatRupiah($topping->price) }}</span>
                                                 </div>
                                             @endforeach
                                         </div>

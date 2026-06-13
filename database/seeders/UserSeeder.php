@@ -5,12 +5,13 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $defaultPassword = Hash::make('password');
+        $defaultPassword = Hash::make(env('SEEDER_ADMIN_PASSWORD', Str::random(16)));
 
         $users = [
             ['name' => 'Admin', 'email' => 'admin@seblak.com', 'role' => 'Admin'],

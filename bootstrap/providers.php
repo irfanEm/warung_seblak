@@ -2,5 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\HorizonServiceProvider::class,
+    // Horizon requires Redis. Re-enable when Redis is configured.
+    // App\Providers\HorizonServiceProvider::class,
 ];

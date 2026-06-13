@@ -45,7 +45,7 @@
                         </div>
                         
                         <div class="mt-4 flex items-center justify-between">
-                            <span class="font-bold text-amber-600 text-sm">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                            <span class="font-bold text-amber-600 text-sm">{{ formatRupiah($item['subtotal']) }}</span>
                             
                             <div class="flex items-center space-x-2 bg-gray-50 border border-gray-200 rounded-lg p-0.5">
                                 <button wire:click="updateQuantity('{{ $key }}', {{ $item['quantity'] - 1 }})" class="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:text-amber-600 active:bg-gray-100 focus:outline-none transition">
@@ -66,7 +66,7 @@
         <div class="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.05)] z-20">
             <div class="flex justify-between items-center mb-3">
                 <span class="text-sm font-medium text-gray-500">Total Tagihan</span>
-                <span class="text-lg font-bold text-gray-900">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                <span class="text-lg font-bold text-gray-900">{{ formatRupiah($total) }}</span>
             </div>
             <a href="{{ route('customer.checkout') }}" class="w-full flex items-center justify-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition active:scale-[0.98]">
                 Lanjut ke Pembayaran

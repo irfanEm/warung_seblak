@@ -47,12 +47,13 @@ class Checkout extends Component
                 notes: $this->notes
             );
             
-            // 2. Bangun $itemDetails untuk Midtrans
+            // 2. Bangun $itemDetails untuk Midtrans (convert cents → Rupiah)
             $itemDetails = [];
             foreach ($order->orderItems as $item) {
+                $unitPriceCents = (int) ($item->price + $item->toppings->sum('price'));
                 $itemDetails[] = [
                     'id' => $item->menu_id ?? 'item-'.$item->id,
-                    'price' => (int) ($item->price + $item->toppings->sum('price')),
+                    'price' => intdiv($unitPriceCents, 100),
                     'quantity' => $item->quantity,
                     'name' => mb_substr($item->item_name_snapshot, 0, 50),
                 ];
