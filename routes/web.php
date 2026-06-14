@@ -24,7 +24,7 @@ Route::get('/menu/{token}', [\App\Http\Controllers\CustomerMenuController::class
 Route::get('/orders', \App\Presentation\Livewire\Customer\OrderLookup::class)->name('customer.orders');
 Route::get('/cart', \App\Presentation\Livewire\Customer\Cart::class)->name('customer.cart');
 Route::get('/checkout', \App\Presentation\Livewire\Customer\Checkout::class)->name('customer.checkout');
-Route::get('/payment/{orderNumber}', \App\Presentation\Livewire\Customer\Payment::class)->name('customer.payment');
+Route::get('/payment/{trackingCode}', \App\Presentation\Livewire\Customer\Payment::class)->name('customer.payment');
 Route::get('/checkout/finish', \App\Presentation\Livewire\Customer\PaymentCallback::class)->name('customer.checkout.finish');
 Route::get('/checkout/unfinish', \App\Presentation\Livewire\Customer\PaymentCallback::class)->name('customer.checkout.unfinish');
 Route::get('/checkout/error', \App\Presentation\Livewire\Customer\PaymentCallback::class)->name('customer.checkout.error');

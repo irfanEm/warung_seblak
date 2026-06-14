@@ -8,14 +8,23 @@ use Illuminate\Http\Request;
 
 class PaymentCallback extends Component
 {
-    public $orderId;
+    public $trackingCode;
     public $status;
     public $title;
     public $message;
 
     public function mount(Request $request)
     {
-        $this->orderId = $request->query('order_id');
+        // Resolve tracking code from query parameter
+        $trackingParam = $request->query('tracking_code');
+
+        // Fallback: Midtrans may also return order_id (which is our order_number)
+        if (!$trackingParam && $request->query('order_id')) {
+            $order = Order::where('order_number', $request->query('order_id'))->first();
+            $trackingParam = $order?->tracking_code;
+        }
+
+        $this->trackingCode = $trackingParam;
         $routeName = request()->route()->getName();
 
         if ($routeName === 'customer.checkout.finish') {

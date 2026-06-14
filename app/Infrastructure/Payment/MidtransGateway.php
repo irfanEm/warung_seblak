@@ -35,9 +35,9 @@ class MidtransGateway
             ],
             'item_details' => $itemDetails,
             'callbacks' => [
-                'finish' => route('customer.checkout.finish', ['order_id' => $order->order_number]),
-                'unfinish' => route('customer.checkout.unfinish', ['order_id' => $order->order_number]),
-                'error' => route('customer.checkout.error', ['order_id' => $order->order_number]),
+                'finish' => route('customer.checkout.finish', ['tracking_code' => $order->tracking_code]),
+                'unfinish' => route('customer.checkout.unfinish', ['tracking_code' => $order->tracking_code]),
+                'error' => route('customer.checkout.error', ['tracking_code' => $order->tracking_code]),
             ],
         ];
 

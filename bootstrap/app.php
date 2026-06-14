@@ -16,6 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'whitelist.midtrans.ip' => \App\Http\Middleware\WhitelistMidtransIP::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\ContentSecurityPolicy::class,
+            \App\Http\Middleware\SanitizeInput::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

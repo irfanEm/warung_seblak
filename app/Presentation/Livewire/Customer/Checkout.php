@@ -72,7 +72,7 @@ class Checkout extends Component
             $this->dispatch('cartUpdated');
 
             // 6. Redirect ke halaman Payment
-            return redirect()->route('customer.payment', ['orderNumber' => $order->order_number]);
+            return redirect()->route('customer.payment', ['trackingCode' => $order->tracking_code]);
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Order Error: ' . $e->getMessage());

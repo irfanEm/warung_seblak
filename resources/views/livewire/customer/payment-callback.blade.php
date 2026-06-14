@@ -17,8 +17,8 @@
     <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ $title }}</h1>
     <p class="text-gray-500 text-sm mb-2">{{ $message }}</p>
     
-    @if($orderId)
-    <p class="text-xs text-gray-400 mb-8 font-mono">Order ID: {{ $orderId }}</p>
+    @if($trackingCode)
+    <p class="text-xs text-gray-400 mb-8 font-mono">Kode Pesanan: {{ $trackingCode }}</p>
     @endif
 
     <a href="{{ route('customer.menu') }}" class="w-full max-w-xs bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition active:scale-[0.98]">

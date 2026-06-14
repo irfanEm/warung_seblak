@@ -8,4 +8,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/payment/notification', [\App\Http\Controllers\Api\PaymentNotificationController::class, '__invoke'])
-    ->middleware('throttle:10,1');
+    ->middleware(['throttle:10,1', 'whitelist.midtrans.ip']);

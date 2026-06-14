@@ -2,19 +2,27 @@
 
 namespace App\Presentation\Livewire\Customer;
 
+use App\Domain\Order\Models\Order;
 use Livewire\Component;
 
 class OrderLookup extends Component
 {
-    public string $orderNumber = '';
+    public string $trackingCode = '';
 
     public function track()
     {
         $this->validate([
-            'orderNumber' => 'required|string',
+            'trackingCode' => 'required|string|size:8',
         ]);
 
-        return redirect()->route('customer.order.tracking', ['order_number' => $this->orderNumber]);
+        $order = Order::where('tracking_code', strtoupper($this->trackingCode))->first();
+
+        if (!$order) {
+            $this->addError('trackingCode', 'Kode pesanan tidak ditemukan.');
+            return;
+        }
+
+        return redirect()->route('customer.payment', ['trackingCode' => $order->tracking_code]);
     }
 
     public function render()

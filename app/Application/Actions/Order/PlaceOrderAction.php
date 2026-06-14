@@ -46,6 +46,7 @@ class PlaceOrderAction
             // 4. Buat Order
             $order = Order::create([
                 'order_number' => $orderNumber,
+                'tracking_code' => generateTrackingCode(),
                 'outlet_id' => $outletId,
                 'type' => $tableId ? 'dine_in' : 'takeaway',
                 'table_id' => $tableId,

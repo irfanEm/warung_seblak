@@ -25,3 +25,28 @@ if (! function_exists('formatRupiahShort')) {
         return number_format(intdiv($amount, 100), 0, ',', '.');
     }
 }
+
+if (! function_exists('generateTrackingCode')) {
+    /**
+     * Generate a unique 8-character alphanumeric tracking code.
+     * Avoids ambiguous characters (0/O, 1/l/I) for readability.
+     *
+     * @return string 8-character uppercase alphanumeric code
+     */
+    function generateTrackingCode(): string
+    {
+        // Unambiguous characters only: digits 2-9 and uppercase letters minus O, I, L
+        $chars = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+        $length = 8;
+        $max = strlen($chars) - 1;
+
+        do {
+            $code = '';
+            for ($i = 0; $i < $length; $i++) {
+                $code .= $chars[random_int(0, $max)];
+            }
+        } while (\App\Domain\Order\Models\Order::where('tracking_code', $code)->exists());
+
+        return $code;
+    }
+}

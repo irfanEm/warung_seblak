@@ -10,9 +10,9 @@ class Payment extends Component
     public Order $order;
     public string $snapToken;
 
-    public function mount($orderNumber)
+    public function mount($trackingCode)
     {
-        $this->order = Order::where('order_number', $orderNumber)->firstOrFail();
+        $this->order = Order::where('tracking_code', $trackingCode)->firstOrFail();
         
         $token = $this->order->snap_token;
         if (!$token) {
