@@ -2,10 +2,10 @@
 
 namespace App\Application\Actions\Order;
 
-use App\Domain\Menu\Models\Menu;
 use App\Domain\Order\Models\Order;
 use App\Domain\Outlet\Models\Outlet;
 use App\Domain\Table\Models\Table;
+use App\Events\OrderPlaced;
 use Illuminate\Support\Facades\DB;
 
 class PlaceOrderAction
@@ -86,18 +86,10 @@ class PlaceOrderAction
                         ]);
                     }
                 }
-
-                // 6. Kurangi stok menu (jika stock_quantity tidak null)
-                $menu = Menu::find($item['menu_id']);
-                if ($menu && $menu->stock_quantity !== null) {
-                    $newStock = max(0, $menu->stock_quantity - $item['quantity']);
-                    $menu->stock_quantity = $newStock;
-                    if ($newStock === 0) {
-                        $menu->is_available = false;
-                    }
-                    $menu->save();
-                }
             }
+
+            // 6. Dispatch event — stock reduction handled by ReduceStock listener
+            event(new OrderPlaced($order));
 
             return $order;
         });

@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Payment;
 
+use App\Contracts\PaymentGatewayInterface;
 use App\Domain\Order\Models\Order;
-class MidtransGateway
+
+class MidtransGateway implements PaymentGatewayInterface
 {
-    /**
-     * Set the Midtrans configuration.
-     */
-    private static function configure()
+    public function __construct()
     {
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         \Midtrans\Config::$clientKey = config('midtrans.client_key');
@@ -17,19 +18,14 @@ class MidtransGateway
         \Midtrans\Config::$is3ds = config('midtrans.3ds');
     }
 
-    /**
-     * Create a new transaction in Midtrans and get the Snap Token.
-     */
-    public static function createTransaction(Order $order, array $itemDetails): string
+    public function createTransaction(Order $order, array $itemDetails, array $customerDetails = []): array
     {
-        self::configure();
-
         $params = [
             'transaction_details' => [
                 'order_id' => $order->order_number,
-                'gross_amount' => intdiv((int) $order->total, 100), // Convert cents to Rupiah
+                'gross_amount' => intdiv((int) $order->total, 100), // cents → Rupiah
             ],
-            'customer_details' => [
+            'customer_details' => !empty($customerDetails) ? $customerDetails : [
                 'first_name' => $order->customer_name ?? 'Pelanggan',
                 'phone' => $order->customer_phone ?? '',
             ],
@@ -41,6 +37,13 @@ class MidtransGateway
             ],
         ];
 
-        return \Midtrans\Snap::getSnapToken($params);
+        $token = \Midtrans\Snap::getSnapToken($params);
+
+        return [
+            'token' => $token,
+            'redirect_url' => config('midtrans.is_production')
+                ? "https://app.midtrans.com/snap/v2/vtweb/{$token}"
+                : "https://app.sandbox.midtrans.com/snap/v2/vtweb/{$token}",
+        ];
     }
 }

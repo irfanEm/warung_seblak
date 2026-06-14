@@ -132,23 +132,7 @@
                                         {{ formatRupiah($order->total) }}
                                     </td>
                                     <td class="py-3.5 px-6 text-center">
-                                        @if($order->status === 'paid')
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200/50">
-                                                Lunas
-                                            </span>
-                                        @elseif($order->status === 'completed')
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-200/50">
-                                                Selesai
-                                            </span>
-                                        @elseif($order->status === 'payment_pending')
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-yellow-100 text-yellow-800 border border-yellow-200/50">
-                                                Menunggu Bayar
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-600 border border-gray-200">
-                                                {{ $order->status }}
-                                            </span>
-                                        @endif
+                                        <x-status-badge :status="$order->status" class="text-[10px] font-black uppercase tracking-wider" />
                                     </td>
                                     <td class="py-3.5 px-6 text-right">
                                         <button 

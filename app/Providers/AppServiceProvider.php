@@ -1,7 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use App\Contracts\PaymentGatewayInterface;
+use App\Events\OrderPlaced;
+use App\Events\PaymentSucceeded;
+use App\Infrastructure\Payment\MidtransGateway;
+use App\Listeners\ClearCart;
+use App\Listeners\ReduceStock;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,10 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            \App\Domain\Menu\Repositories\MenuRepositoryInterface::class, 
-            \App\Infrastructure\Persistence\Eloquent\MenuRepository::class
-        );
+        $this->app->bind(PaymentGatewayInterface::class, MidtransGateway::class);
     }
 
     /**
@@ -22,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Auto-discovery via config/livewire.php class_namespace
+        Event::listen(OrderPlaced::class, ReduceStock::class);
+        Event::listen(PaymentSucceeded::class, ClearCart::class);
     }
 }

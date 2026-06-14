@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presentation\Livewire\Customer;
 
+use App\Contracts\PaymentGatewayInterface;
 use App\Domain\Table\Models\Table;
 use Livewire\Component;
 
@@ -27,9 +30,10 @@ class Checkout extends Component
         }
     }
 
-    public function placeOrder(\App\Application\Actions\Order\PlaceOrderAction $action)
-    {
-        // Validasi opsional
+    public function placeOrder(
+        \App\Application\Actions\Order\PlaceOrderAction $action,
+        PaymentGatewayInterface $gateway,
+    ) {
         $this->validate([
             'customerName' => 'nullable|string|max:100',
             'notes' => 'nullable|string|max:255',
@@ -38,40 +42,40 @@ class Checkout extends Component
         $this->customerName = strip_tags($this->customerName);
 
         try {
-            // 1. Eksekusi Action Pembuatan Pesanan (status pending)
+            // 1. Create the order (status: pending)
             $order = $action->execute(
                 cart: $this->cart,
                 tableId: $this->table?->id,
                 customerName: $this->customerName,
-                customerPhone: null, // belum ada di form
-                notes: $this->notes
+                customerPhone: null,
+                notes: $this->notes,
             );
             
-            // 2. Bangun $itemDetails untuk Midtrans (convert cents → Rupiah)
+            // 2. Build item details for Midtrans (cents → Rupiah)
             $itemDetails = [];
             foreach ($order->orderItems as $item) {
                 $unitPriceCents = (int) ($item->price + $item->toppings->sum('price'));
                 $itemDetails[] = [
-                    'id' => $item->menu_id ?? 'item-'.$item->id,
+                    'id' => $item->menu_id ?? 'item-' . $item->id,
                     'price' => intdiv($unitPriceCents, 100),
                     'quantity' => $item->quantity,
                     'name' => mb_substr($item->item_name_snapshot, 0, 50),
                 ];
             }
 
-            // 3. Panggil Gateway Midtrans
-            $snapToken = \App\Infrastructure\Payment\MidtransGateway::createTransaction($order, $itemDetails);
+            // 3. Create Midtrans transaction via interface
+            $result = $gateway->createTransaction($order, $itemDetails);
 
-            // 4. Update status ke payment_pending dan simpan snap_token
+            // 4. Update status to payment_pending and save snap_token
             $order->update([
                 'status' => 'payment_pending',
-                'snap_token' => $snapToken
+                'snap_token' => $result['token'],
             ]);
             
-            // 5. Dispatch event update cart (jangan hapus session di sini)
+            // 5. Dispatch event to update cart badge
             $this->dispatch('cartUpdated');
 
-            // 6. Redirect ke halaman Payment
+            // 6. Redirect to payment page
             return redirect()->route('customer.payment', ['trackingCode' => $order->tracking_code]);
 
         } catch (\Exception $e) {

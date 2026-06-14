@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presentation\Livewire\Customer;
 
 use App\Domain\Order\Models\Order;
+use App\Events\PaymentSucceeded;
 use Livewire\Component;
 use Illuminate\Http\Request;
 
@@ -32,8 +35,13 @@ class PaymentCallback extends Component
             $this->title = 'Pembayaran Berhasil / Sedang Diproses';
             $this->message = 'Terima kasih! Pesanan Anda segera disiapkan.';
 
-            // Clear customer session cart after successful payment
-            session()->forget('cart');
+            // Dispatch event — cart clearing handled by ClearCart listener
+            if ($this->trackingCode) {
+                $order = Order::where('tracking_code', $this->trackingCode)->first();
+                if ($order) {
+                    event(new PaymentSucceeded($order));
+                }
+            }
         } elseif ($routeName === 'customer.checkout.unfinish') {
             $this->status = 'pending';
             $this->title = 'Pembayaran Tertunda';

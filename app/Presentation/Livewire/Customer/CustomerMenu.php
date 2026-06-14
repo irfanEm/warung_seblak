@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presentation\Livewire\Customer;
 
 use App\Application\Actions\Menu\ListMenusAction;
@@ -7,6 +9,7 @@ use App\Domain\Menu\Models\Category;
 use App\Domain\Menu\Models\Menu;
 use App\Domain\Menu\Models\SpicinessLevel;
 use App\Domain\Menu\Models\Topping;
+use App\Services\CartService;
 use Livewire\Component;
 
 class CustomerMenu extends Component
@@ -47,30 +50,23 @@ class CustomerMenu extends Component
 
     public function addToCart()
     {
-        if (!$this->selectedMenu) return;
+        if (!$this->selectedMenu) {
+            return;
+        }
 
-        // Cek stok
+        // Stock check
         if ($this->selectedMenu->stock_quantity !== null && $this->quantity > $this->selectedMenu->stock_quantity) {
             session()->flash('error', "Stok tidak mencukupi. Tersedia: {$this->selectedMenu->stock_quantity}.");
             return;
         }
 
-        // Hitung Subtotal (Harga Menu + Harga Topping)
-        $subtotal = $this->selectedMenu->price;
         $toppings = Topping::whereIn('id', $this->selectedToppings)->get();
-        
-        foreach ($toppings as $topping) {
-            $subtotal += $topping->price;
-        }
 
         $spiciness = null;
         if ($this->selectedSpiciness) {
             $spicinessModel = SpicinessLevel::find($this->selectedSpiciness);
             if ($spicinessModel) {
-                $spiciness = [
-                    'id' => $spicinessModel->id,
-                    'name' => $spicinessModel->name
-                ];
+                $spiciness = ['id' => $spicinessModel->id, 'name' => $spicinessModel->name];
             }
         }
 
@@ -81,16 +77,15 @@ class CustomerMenu extends Component
             'quantity' => $this->quantity,
             'toppings' => $toppings->map(fn($t) => ['id' => $t->id, 'name' => $t->name, 'price' => $t->price])->toArray(),
             'spiciness_level' => $spiciness,
-            'subtotal' => $subtotal * $this->quantity,
+            'subtotal' => 0,
         ];
 
-        // Tambahkan ke Cart
-        $this->cart[uniqid()] = $item;
-        
-        // Simpan ke Session
+        $cartService = app(CartService::class);
+        $item['subtotal'] = $cartService->calculateSubtotal($item);
+        $this->cart = $cartService->addItem($this->cart, $item);
+
         session(['cart' => $this->cart]);
-        
-        // Update state & UI
+
         $this->dispatch('cartUpdated');
         $this->closeModal();
     }
