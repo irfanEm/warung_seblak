@@ -6,6 +6,7 @@ use App\Domain\Menu\Models\Category;
 use App\Domain\Menu\Models\Menu;
 use App\Domain\Menu\Models\SpicinessLevel;
 use App\Domain\Menu\Models\Topping;
+use App\Domain\Outlet\Models\Outlet;
 use App\Domain\Table\Models\Table;
 use App\Application\Actions\Order\PlaceOrderAction;
 use Livewire\Component;
@@ -40,6 +41,9 @@ class PosScreen extends Component
     public string $paymentMethod = 'tunai'; // tunai, non_tunai
     public $cashAmount = 0;
 
+    // Last completed order for receipt printing
+    public ?int $lastOrderId = null;
+
     /**
      * Initalize component states.
      */
@@ -67,6 +71,12 @@ class PosScreen extends Component
     public function openAddModal(int $menuId): void
     {
         $menu = Menu::with(['toppings', 'spicinessLevels'])->findOrFail($menuId);
+
+        // Cek stok
+        if ($menu->stock_quantity !== null && $menu->stock_quantity <= 0) {
+            session()->flash('error', "Stok {$menu->name} habis.");
+            return;
+        }
 
         // Shortcut: No customizations required
         if ($menu->toppings->isEmpty() && $menu->spicinessLevels->isEmpty()) {
@@ -117,6 +127,12 @@ class PosScreen extends Component
     public function addToCart(): void
     {
         if (!$this->selectedMenu) {
+            return;
+        }
+
+        // Cek stok
+        if ($this->selectedMenu->stock_quantity !== null && $this->quantity > $this->selectedMenu->stock_quantity) {
+            $this->addError('quantity', "Stok tidak mencukupi. Tersedia: {$this->selectedMenu->stock_quantity}.");
             return;
         }
 
@@ -232,6 +248,28 @@ class PosScreen extends Component
     }
 
     /**
+     * Calculate tax based on outlet tax_rate.
+     *
+     * @return int
+     */
+    public function getTax(): int
+    {
+        $outlet = Outlet::first();
+        $taxRate = $outlet?->tax_rate ?? 0;
+        return (int) round($this->getCartTotal() * $taxRate / 100);
+    }
+
+    /**
+     * Grand total including tax.
+     *
+     * @return int
+     */
+    public function getGrandTotal(): int
+    {
+        return $this->getCartTotal() + $this->getTax();
+    }
+
+    /**
      * Open checkout payment modal with full safety validation.
      */
     public function openPaymentModal(): void
@@ -248,7 +286,7 @@ class PosScreen extends Component
             return;
         }
 
-        $this->cashAmount = intdiv($this->getCartTotal(), 100); // Autofill exact total in Rupiah
+        $this->cashAmount = intdiv($this->getGrandTotal(), 100); // Autofill exact total in Rupiah
         $this->showPaymentModal = true;
     }
 
@@ -268,7 +306,7 @@ class PosScreen extends Component
     public function calculateChange(): int
     {
         $cashInCents = (int) (floatval($this->cashAmount) * 100);
-        return max(0, $cashInCents - $this->getCartTotal());
+        return max(0, $cashInCents - $this->getGrandTotal());
     }
 
     /**
@@ -287,7 +325,7 @@ class PosScreen extends Component
             return;
         }
 
-        $total = $this->getCartTotal();
+        $total = $this->getGrandTotal();
 
         // Validate cashier cash input (cashAmount is in Rupiah, total is in cents)
         if ($this->paymentMethod === 'tunai') {
@@ -320,6 +358,9 @@ class PosScreen extends Component
             $change = $this->calculateChange();
             $successMsg .= " Kembalian: " . formatRupiah($change);
         }
+
+        // Store last order ID for receipt printing
+        $this->lastOrderId = $order->id;
 
         // Reset POS Terminal state
         $this->cart = [];

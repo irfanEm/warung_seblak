@@ -83,8 +83,13 @@ class Checkout extends Component
 
     public function render()
     {
-        $total = collect($this->cart)->sum('subtotal');
-        return view('livewire.customer.checkout', compact('total'))
+        $subtotal = collect($this->cart)->sum('subtotal');
+        $outlet = \App\Domain\Outlet\Models\Outlet::first();
+        $taxRate = $outlet?->tax_rate ?? 0;
+        $tax = (int) round($subtotal * $taxRate / 100);
+        $total = $subtotal + $tax;
+
+        return view('livewire.customer.checkout', compact('subtotal', 'tax', 'total'))
             ->layout('layouts.customer');
     }
 }

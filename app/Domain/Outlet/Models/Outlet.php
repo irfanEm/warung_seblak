@@ -14,11 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Outlet extends Model
 {
-    protected $fillable = ['name', 'address', 'lat', 'lon'];
+    protected $fillable = ['name', 'address', 'tax_rate', 'lat', 'lon'];
 
     protected $casts = [
         'lat' => 'float',
         'lon' => 'float',
+        'tax_rate' => 'decimal:2',
     ];
 
     public function categories(): HasMany

@@ -37,6 +37,9 @@
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Dashboard</a>
                 <a href="{{ route('admin.menu.index') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.menu.*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Menu</a>
                 <a href="{{ route('admin.table.index') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.table.*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">Meja & QR Code</a>
+                <a href="{{ route('admin.users.index') }}" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.users.*') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">
+                    <span class="mr-2">👤</span> Pengguna
+                </a>
                 
                 @role('Admin|Kasir')
                 <a href="{{ route('pos.index') }}" target="_blank" class="flex items-center py-2.5 px-4 rounded-md transition duration-200 hover:bg-gray-800 hover:text-white {{ request()->routeIs('pos.index') ? 'bg-gray-800 text-white font-medium' : 'text-gray-400' }}">

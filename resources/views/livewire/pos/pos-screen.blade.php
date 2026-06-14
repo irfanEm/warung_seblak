@@ -49,11 +49,21 @@
             <div class="flex-1 overflow-y-auto p-6">
                 <!-- Success & Error Alert Messages -->
                 @if (session()->has('success'))
-                    <div class="mb-4 bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-3 rounded-xl text-sm flex items-center space-x-2 shadow-sm" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)">
-                        <svg class="w-5 h-5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="font-semibold">{{ session('success') }}</span>
+                    <div class="mb-4 bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-3 rounded-xl text-sm flex items-center justify-between shadow-sm" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 8000)">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="font-semibold">{{ session('success') }}</span>
+                        </div>
+                        @if ($this->lastOrderId)
+                            <a href="{{ route('pos.receipt', $this->lastOrderId) }}" target="_blank" class="ml-4 inline-flex items-center px-3 py-1.5 bg-emerald-600 text-white text-xs font-medium rounded-lg hover:bg-emerald-700 transition shrink-0">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                </svg>
+                                Cetak Struk
+                            </a>
+                        @endif
                     </div>
                 @endif
 
@@ -280,9 +290,19 @@
                         <span>Jumlah Item</span>
                         <span>{{ collect($cart)->sum('quantity') }}x</span>
                     </div>
+                    @if ($this->getTax() > 0)
+                        <div class="flex justify-between text-xs text-gray-500 font-semibold">
+                            <span>Subtotal</span>
+                            <span>{{ formatRupiah($this->getCartTotal()) }}</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 font-semibold">
+                            <span>Pajak</span>
+                            <span>{{ formatRupiah($this->getTax()) }}</span>
+                        </div>
+                    @endif
                     <div class="flex justify-between text-base font-black text-gray-800">
                         <span>Total Tagihan</span>
-                        <span class="text-amber-600">{{ formatRupiah($this->getCartTotal()) }}</span>
+                        <span class="text-amber-600">{{ formatRupiah($this->getGrandTotal()) }}</span>
                     </div>
                 </div>
 
@@ -448,11 +468,19 @@
                     <!-- Modal Body content -->
                     <div class="p-6 space-y-6 overflow-y-auto">
                         <!-- Order bill summary -->
-                        <div class="bg-amber-50/40 border border-amber-500/15 rounded-xl p-4 flex justify-between items-center">
-                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Pembayaran</span>
-                            <span class="text-xl font-black text-amber-600">
-                                {{ formatRupiah($this->getCartTotal()) }}
-                            </span>
+                        <div class="bg-amber-50/40 border border-amber-500/15 rounded-xl p-4 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Pembayaran</span>
+                                <span class="text-xl font-black text-amber-600">
+                                    {{ formatRupiah($this->getGrandTotal()) }}
+                                </span>
+                            </div>
+                            @if ($this->getTax() > 0)
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>Termasuk Pajak</span>
+                                    <span>{{ formatRupiah($this->getTax()) }}</span>
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Method Radio Checklist selection -->

@@ -43,8 +43,9 @@ class PaymentNotificationController extends Controller
                     'status' => 'paid',
                     'midtrans_transaction_id' => $transactionId
                 ]);
-                // Membersihkan keranjang (Catatan: ini tidak akan langsung memengaruhi browser user 
-                // karena berada di context webhook, tapi mekanisme clearing yang lebih kompleks bisa diatur)
+                // Note: session()->forget('cart') here is in webhook (API) context — it does NOT
+                // affect the customer's browser session. Cart is cleared in PaymentCallback.php
+                // when the customer lands back on the site after payment.
                 session()->forget('cart');
             } else if ($transactionStatus == 'pending') {
                 $order->update(['status' => 'payment_pending']);

@@ -31,6 +31,9 @@ class PaymentCallback extends Component
             $this->status = 'success';
             $this->title = 'Pembayaran Berhasil / Sedang Diproses';
             $this->message = 'Terima kasih! Pesanan Anda segera disiapkan.';
+
+            // Clear customer session cart after successful payment
+            session()->forget('cart');
         } elseif ($routeName === 'customer.checkout.unfinish') {
             $this->status = 'pending';
             $this->title = 'Pembayaran Tertunda';

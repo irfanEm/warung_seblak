@@ -46,6 +46,12 @@
                     </div>
                     
                     <p class="text-sm text-gray-500 mb-4">{{ $menu->category->name ?? 'Uncategorized' }}</p>
+
+                    @if ($menu->stock_quantity !== null)
+                        <p class="text-xs {{ $menu->stock_quantity > 0 ? 'text-gray-600' : 'text-red-600 font-medium' }} mb-2">
+                            Stok: {{ $menu->stock_quantity }}
+                        </p>
+                    @endif
                     
                     <div class="mt-auto flex items-center justify-between">
                         <span class="text-lg font-bold text-gray-900">{{ formatRupiah($menu->price) }}</span>

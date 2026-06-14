@@ -49,6 +49,12 @@ class CustomerMenu extends Component
     {
         if (!$this->selectedMenu) return;
 
+        // Cek stok
+        if ($this->selectedMenu->stock_quantity !== null && $this->quantity > $this->selectedMenu->stock_quantity) {
+            session()->flash('error', "Stok tidak mencukupi. Tersedia: {$this->selectedMenu->stock_quantity}.");
+            return;
+        }
+
         // Hitung Subtotal (Harga Menu + Harga Topping)
         $subtotal = $this->selectedMenu->price;
         $toppings = Topping::whereIn('id', $this->selectedToppings)->get();

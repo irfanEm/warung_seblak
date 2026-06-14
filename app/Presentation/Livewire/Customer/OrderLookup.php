@@ -22,7 +22,7 @@ class OrderLookup extends Component
             return;
         }
 
-        return redirect()->route('customer.payment', ['trackingCode' => $order->tracking_code]);
+        return redirect()->route('customer.order.tracking', ['trackingCode' => $order->tracking_code]);
     }
 
     public function render()

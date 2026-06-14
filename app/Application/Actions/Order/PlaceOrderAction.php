@@ -2,6 +2,7 @@
 
 namespace App\Application\Actions\Order;
 
+use App\Domain\Menu\Models\Menu;
 use App\Domain\Order\Models\Order;
 use App\Domain\Outlet\Models\Outlet;
 use App\Domain\Table\Models\Table;
@@ -33,9 +34,11 @@ class PlaceOrderAction
                 throw new \Exception('Outlet tidak ditemukan. Pastikan sudah ada outlet terdaftar.');
             }
 
-            // 2. Hitung subtotal
+            // 2. Hitung subtotal dan pajak
             $subtotal = collect($cart)->sum('subtotal');
-            $tax = 0; // Tambahkan tax logic jika diperlukan nanti
+            $outlet = Outlet::find($outletId);
+            $taxRate = $outlet?->tax_rate ?? 0;
+            $tax = (int) round($subtotal * $taxRate / 100);
             $deliveryFee = 0;
             $discount = 0;
             $total = $subtotal + $tax + $deliveryFee - $discount;
@@ -82,6 +85,17 @@ class PlaceOrderAction
                             'price' => $topping['price'],
                         ]);
                     }
+                }
+
+                // 6. Kurangi stok menu (jika stock_quantity tidak null)
+                $menu = Menu::find($item['menu_id']);
+                if ($menu && $menu->stock_quantity !== null) {
+                    $newStock = max(0, $menu->stock_quantity - $item['quantity']);
+                    $menu->stock_quantity = $newStock;
+                    if ($newStock === 0) {
+                        $menu->is_available = false;
+                    }
+                    $menu->save();
                 }
             }
 

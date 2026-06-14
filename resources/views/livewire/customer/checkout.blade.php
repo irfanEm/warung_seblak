@@ -42,9 +42,21 @@
                 </div>
             @endforeach
             
-            <div class="pt-3 mt-3 border-t border-dashed border-gray-200 flex justify-between items-center">
-                <span class="font-bold text-gray-900">Total Pembayaran</span>
-                <span class="text-lg font-black text-amber-600">{{ formatRupiah($total) }}</span>
+            <div class="pt-3 mt-3 border-t border-dashed border-gray-200 space-y-2">
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>Subtotal</span>
+                    <span>{{ formatRupiah($subtotal) }}</span>
+                </div>
+                @if ($tax > 0)
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Pajak</span>
+                        <span>{{ formatRupiah($tax) }}</span>
+                    </div>
+                @endif
+                <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+                    <span class="font-bold text-gray-900">Total Pembayaran</span>
+                    <span class="text-lg font-black text-amber-600">{{ formatRupiah($total) }}</span>
+                </div>
             </div>
         </div>
     </div>
